@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "fullstack": "concurrently \"npm run backend\" \"npm run frontend\"",
     "backend": "cd backend && .\\env\\Scripts\\activate && python main.py",
-    "frontend": "cd frontend && npm run dev"
+    "frontend": "cd frontend && npm run dev",
+    "updateallfrommain": "git switch mfihlakalo && git merge main && git switch && git switch slindokuhle && git merge main && git switch && git switch nompumelo && git merge main && git switch && git switch kwanda && git merge main && git switch && git switch bongeka && git merge main && git switch && git switch nosipho && git merge main && git switch && git switch nokulunga && git merge main && git switch && git switch lungisa && git merge main && git switch && git switch shravan && git merge main && git switch && git switch sohail && git merge main && git switch && git switch shaunak && git merge main"    
   },
   "keywords": [],
   "author": "",
