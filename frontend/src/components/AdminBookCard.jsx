@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 const AdminBookCard = ({ book }) => {
   const navigate = useNavigate();
+
+  const deletebook = () => {};
+
   var available;
   if (book.quantity > 0) {
     available = true;
