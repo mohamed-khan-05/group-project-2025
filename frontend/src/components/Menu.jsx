@@ -24,26 +24,40 @@ const Menu = () => {
   return (
     <>
       {ready ? (
-        <div className="flex justify-evenly border p-2 mb-10 bg-amber-200">
+        <div className="w-[50vw] sm:w-[15vw] bg-blue-300 sm:h-[98vh] flex flex-col justify-center h-[98vh]">
           <div
             onClick={() => {
               navigate(`/homepage/${user_id}`);
             }}
-            className="cursor-pointer"
+            className="cursor-pointer py-5 border-1 border-blue-400"
           >
-            <h1 className="bg-white py-1 px-3">Books</h1>
+            <h1>Books</h1>
           </div>
-          <h1 className="line-through">Orders</h1>
+          <div className=" py-5 border-1 border-blue-400">
+            <h1>Orders</h1>
+          </div>
+
           <div
             onClick={() => {
               navigate(`/wishlist/${user_id}`);
             }}
-            className="cursor-pointer"
+            className="cursor-pointer py-5 border-1 border-blue-400"
           >
-            <h1 className="bg-white py-1 px-3">Wishlist</h1>
+            <h1>Wishlist</h1>
           </div>
-          <h1 className="line-through">Cart</h1>
-          <h1 className="line-through">Profile</h1>
+          <div
+            className=" py-5 border-1 border-blue-400"
+            onClick={() => {
+              navigate(`/cart/${user_id}`);
+            }}
+          >
+            <h1>Cart</h1>
+          </div>
+
+          <div className=" py-5 border-1 border-blue-400">
+            <h1>Profile</h1>
+          </div>
+
           <button
             className="border-1 bg-white py-1 px-3"
             onClick={() => {

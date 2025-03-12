@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import LoginSignup from "./pages/LoginSignup";
 
@@ -11,6 +11,7 @@ import ManageBooks from "./pages/ManageBooks";
 // User
 import Homepage from "./pages/Homepage";
 import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
 
 // All
 import BookDetails from "./pages/BookDetails";
@@ -20,6 +21,7 @@ export const Context = createContext();
 const App = () => {
   const navigate = useNavigate();
   const [globalid, setGlobalid] = useState(null);
+
   useEffect(() => {
     const user_id = localStorage.getItem("user_id");
     if (!user_id) {
@@ -40,6 +42,7 @@ const App = () => {
         <Route path="/homepage/:userid" element={<Homepage />} />
         <Route path="/bookdetails/:bookid" element={<BookDetails />} />
         <Route path="/wishlist/:userid" element={<Wishlist />} />
+        <Route path="/cart/:userid" element={<Cart />} />
       </Routes>
     </Context.Provider>
   );
