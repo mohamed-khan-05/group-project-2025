@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Menu from "../components/Menu";
+import { Context } from "../App";
 
 // Media
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -11,6 +12,7 @@ const Homepage = () => {
   const navigate = useNavigate();
   const [showmenu, setShowmenu] = useState(false);
   const { userid } = useParams();
+  const user_id = useContext(Context);
 
   useEffect(() => {
     const user_id = localStorage.getItem("user_id");
@@ -54,7 +56,13 @@ const Homepage = () => {
               <h1>Book Store</h1>
             </div>
             <div className="p-2 flex items-center gap-2">
-              <FaCartShopping />
+              <div
+                onClick={() => {
+                  navigate(`/cart/${user_id}`);
+                }}
+              >
+                <FaCartShopping />
+              </div>
               <div className="text-red-700">5</div>
             </div>
           </div>

@@ -24,7 +24,7 @@ const Menu = () => {
   return (
     <>
       {ready ? (
-        <div className="w-[50vw] sm:w-[15vw] bg-blue-300 sm:h-[98vh] flex flex-col justify-center h-[98vh]">
+        <div className="w-[50vw] sm:w-[15vw] bg-blue-300 sm:h-[98vh] flex flex-col justify-center h-[100vh]">
           <div
             onClick={() => {
               navigate(`/homepage/${user_id}`);
