@@ -8,7 +8,7 @@ import axios from "axios";
 import { IoMdEye } from "react-icons/io";
 import { FaRegEyeSlash } from "react-icons/fa";
 
-const Login = ({ setGlobalid, isLogin, setIsLogin }) => {
+const Login = ({ setUser_id, isLogin, setIsLogin }) => {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_BASE_URL;
   const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ const Login = ({ setGlobalid, isLogin, setIsLogin }) => {
           toast.success("Login Successful");
           const user_id = res.data.user_id;
           localStorage.setItem("user_id", user_id);
-          setGlobalid(user_id);
+          setUser_id(user_id);
           setTimeout(() => {
             if (user_id !== 1) {
               navigate(`/homepage/${user_id}`);

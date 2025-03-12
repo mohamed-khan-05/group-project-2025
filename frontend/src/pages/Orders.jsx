@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../App";
 
-const UserOrders = ({ userId }) => {
+const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const user_id = useContext(Context);
@@ -11,10 +11,11 @@ const UserOrders = ({ userId }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        axios.post(`${url}/orders/`, { user_id: user_id }).then((res) => {
-          setOrders(res);
+        const res = await axios.post(`${url}/orders/getuserorders`, {
+          user_id: user_id,
         });
-        setOrders(data);
+
+        setOrders(res.data.orders || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -23,13 +24,13 @@ const UserOrders = ({ userId }) => {
     };
 
     fetchOrders();
-  }, [userId]);
+  }, [user_id]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (orders.length === 0) {
+  if (!orders || orders.length === 0) {
     return <div>No orders found.</div>;
   }
 
@@ -40,7 +41,7 @@ const UserOrders = ({ userId }) => {
         {orders.map((order) => (
           <li key={order.order_id}>
             <h3>
-              {order.book_title} by {order.book_author}
+              {order.book_title} by {order.book_author || "Unknown Author"}
             </h3>
             <p>Quantity: {order.quantity}</p>
             <p>Amount: ${order.purchase_amount}</p>
@@ -53,4 +54,4 @@ const UserOrders = ({ userId }) => {
   );
 };
 
-export default UserOrders;
+export default Orders;

@@ -10,17 +10,16 @@ def get_user_orders():
     
     orders = Orders.query.filter_by(user_id=user_id).all()
 
-    if (orders is None):
+    if not orders:
         return jsonify({"orders":None})
     
     order_details = []
     for order in orders:
-        
         book = Book.query.get(order.book_id)
         order_data = {
             'order_id': order.id,
+            "book_id":order.book_id,
             'book_title': book.title,
-            'book_author': book.author,
             'quantity': order.quantity,
             'purchase_amount': str(order.purchase_amount),  
             'purchase_date': order.purchase_date.isoformat(),

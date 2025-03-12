@@ -4,7 +4,7 @@ import Login from "../components/Login";
 import Signup from "../components/Signup";
 import { ToastContainer } from "react-toastify";
 
-const LoginSignup = ({ setGlobalid }) => {
+const LoginSignup = ({ setUser_id }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
 
@@ -39,7 +39,7 @@ const LoginSignup = ({ setGlobalid }) => {
               <div className="w-1/2 sm:p-8 pt-10">
                 {isLogin ? (
                   <Login
-                    setGlobalid={setGlobalid}
+                    setUser_id={setUser_id}
                     isLogin={isLogin}
                     setIsLogin={setIsLogin}
                   />
@@ -74,7 +74,7 @@ const LoginSignup = ({ setGlobalid }) => {
                   <div className="flex justify-between">
                     <div className="w-full">
                       <Login
-                        setGlobalid={setGlobalid}
+                        setUser_id={setUser_id}
                         isLogin={isLogin}
                         setIsLogin={setIsLogin}
                       />

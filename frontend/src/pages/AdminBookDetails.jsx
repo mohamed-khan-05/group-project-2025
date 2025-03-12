@@ -4,7 +4,7 @@ import { Context } from "../App";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const BookDetails = () => {
+const AdminBookDetails = () => {
   const url = import.meta.env.VITE_BASE_URL;
   const user_id = useContext(Context);
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const BookDetails = () => {
       {!book ? null : (
         <button
           onClick={() => {
-            navigate(`/homepage/${user_id}`);
+            navigate("/adminpage");
           }}
         >
           Back
@@ -55,33 +55,13 @@ const BookDetails = () => {
           <p className="text-gray-700">by {book.author}</p>
           <p className="text-gray-500">{book.category}</p>
           <p>{book.description}</p>
-          <p className="text-green-600 font-bold">Price: R {actualPrice}</p>
-
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Reviews</h3>
-            {reviews.length > 0 ? (
-              <ul className="list-disc pl-5">
-                {reviews.map((review, index) => (
-                  <li key={index}>
-                    <h1>
-                      {new Date(review.created_at).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </h1>
-                    <strong>{review.user_name}</strong>: {review.comment}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No reviews yet.</p>
-            )}
-          </div>
+          <p className="text-green-600 font-bold">Price: R {book.price}</p>
+          <p>{book.discount}</p>
+          <p>{book.amount}</p>
         </div>
       )}
     </div>
   );
 };
 
-export default BookDetails;
+export default AdminBookDetails;
