@@ -5,7 +5,7 @@ const AllOrders = () => {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        // Fetch orders data from Flask API
+        
         const fetchOrders = async () => {
             const response = await fetch('/api/orders');
             const data = await response.json();
