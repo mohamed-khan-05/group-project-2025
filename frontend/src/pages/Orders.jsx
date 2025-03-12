@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../App";
 
 const UserOrders = ({ userId }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user_id = useContext(Context);
+  const url = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
-    // Fetch user orders from the Flask API
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`/api/orders/${userId}`);
-        const data = await response.json();
+        axios.post(`${url}/orders/`, { user_id: user_id }).then((res) => {
+          setOrders(res);
+        });
         setOrders(data);
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error("Error fetching orders:", error);
       } finally {
         setLoading(false);
       }
@@ -35,7 +39,9 @@ const UserOrders = ({ userId }) => {
       <ul>
         {orders.map((order) => (
           <li key={order.order_id}>
-            <h3>{order.book_title} by {order.book_author}</h3>
+            <h3>
+              {order.book_title} by {order.book_author}
+            </h3>
             <p>Quantity: {order.quantity}</p>
             <p>Amount: ${order.purchase_amount}</p>
             <p>Status: {order.status}</p>
@@ -48,4 +54,3 @@ const UserOrders = ({ userId }) => {
 };
 
 export default UserOrders;
-

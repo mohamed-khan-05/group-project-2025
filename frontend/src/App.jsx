@@ -12,6 +12,7 @@ import ManageBooks from "./pages/ManageBooks";
 import Homepage from "./pages/Homepage";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
+import Orders from "./pages/Orders";
 
 // All
 import BookDetails from "./pages/BookDetails";
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/bookdetails/:bookid" element={<BookDetails />} />
         <Route path="/wishlist/:userid" element={<Wishlist />} />
         <Route path="/cart/:userid" element={<Cart />} />
+        <Route path="/orders/:userid" element={<Orders />} />
       </Routes>
     </Context.Provider>
   );

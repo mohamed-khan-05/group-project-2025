@@ -33,7 +33,12 @@ const Menu = () => {
           >
             <h1>Books</h1>
           </div>
-          <div className=" py-5 border-1 border-blue-400">
+          <div
+            className=" py-5 border-1 border-blue-400"
+            onClick={() => {
+              navigate(`/orders/${user_id}`);
+            }}
+          >
             <h1>Orders</h1>
           </div>
 
