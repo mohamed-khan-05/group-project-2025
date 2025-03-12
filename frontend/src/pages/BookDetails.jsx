@@ -32,7 +32,11 @@ const BookDetails = () => {
       {!book ? null : (
         <button
           onClick={() => {
-            navigate(`/homepage/${user_id}`);
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate(`/homepage/${user_id}`);
+            }
           }}
         >
           Back

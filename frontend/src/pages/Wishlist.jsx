@@ -3,10 +3,12 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import { Context } from "../App";
 import BookCard from "../components/BookCard";
+import { useNavigate } from "react-router-dom";
 
 const Wishlist = () => {
   const url = import.meta.env.VITE_BASE_URL;
   const user_id = useContext(Context);
+  const navigate = useNavigate();
 
   const [books, setBooks] = useState([]);
   const [refresh, setRefresh] = useState(0);
@@ -30,7 +32,13 @@ const Wishlist = () => {
   }, [user_id, refresh]);
   return (
     <div>
-      Wishlist
+      <button
+        onClick={() => {
+          navigate(`/homepage/${user_id}`);
+        }}
+      >
+        Back
+      </button>
       <div className="flex gap-10">
         {books.map((book) => {
           return <BookCard key={book.id} book={book} setRefresh={setRefresh} />;

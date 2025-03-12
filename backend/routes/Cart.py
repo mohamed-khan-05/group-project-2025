@@ -1,5 +1,11 @@
+import os
 from flask import Blueprint, jsonify, request
 from models import db, Cart, Book, User, Orders
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("BASE_URL")
 
 Cart_bp = Blueprint("Cart_bp", __name__)
 
@@ -51,7 +57,7 @@ def remove():
     return jsonify({"message": "failed"})
 
 @Cart_bp.route("getcartamount",methods=["POST"])
-def getcart():
+def getcartamount():
     data = request.get_json()
     user_id = data.get("user_id")
 
@@ -60,3 +66,26 @@ def getcart():
         return jsonify({"cart":cart})
     else:
         return jsonify({"cart":0})
+    
+@Cart_bp.route("/getcart", methods=["POST"])
+def getcart():
+    data = request.get_json()
+    user_id = data.get("user_id")
+
+    cart = Cart.query.filter_by(user_id=user_id).all()
+    cart_items = []
+
+    if cart:
+        for item in cart:
+            book = Book.query.filter_by(id=item.book_id).first()
+            cart_items.append({
+                "id": item.id,
+                "user_id": item.user_id,
+                "book_id": item.book_id,
+                "quantity": item.quantity,
+                "total":item.total,
+                "discount":item.discount_amount,
+                "book_image": f"{BASE_URL}/uploads/books/{book.image}" if book else f"{BASE_URL}/uploads/books/BookPlaceholder.png",
+            })
+
+    return jsonify({"cart": cart_items})

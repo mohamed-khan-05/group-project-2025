@@ -54,7 +54,7 @@ const BookCard = ({ book, setRefresh }) => {
         user_id: parseInt(user_id),
         book_id: book.id,
         quantity: 1,
-        total: actualPrice,
+        total: book.price,
         discount_amount: book.discount,
       })
       .then((res) => {

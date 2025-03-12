@@ -4,6 +4,11 @@ from config import app
 from flask import Blueprint, jsonify, request
 from models import db, Book, Review, User
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("BASE_URL")
 
 Books_bp = Blueprint("Books_bp", __name__)
 
@@ -56,7 +61,7 @@ def getall():
             "price":book.price,
             "discount":book.discount,
             "quantity": book.quantity,
-            "image": f"http://127.0.0.1:5000//uploads/books/{book.image}"
+            "image": f"{BASE_URL}/uploads/books/{book.image}"
         })
     return jsonify(books_list)
 
