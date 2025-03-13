@@ -36,7 +36,7 @@ const Cart = () => {
       <button onClick={() => navigate(`/homepage/${user_id}`)}>Back</button>
       <h2>Cart</h2>
       {cartItems.length > 0 ? (
-        <div>
+        <div className="flex flex-col gap-5">
           {cartItems.map((item) => (
             <div
               key={item.id}

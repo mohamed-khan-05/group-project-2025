@@ -27,6 +27,7 @@ const Homepage = () => {
   const [refresh, setRefresh] = useState(false);
   const [amount, setAmount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (userid != user_id && user_id != null) {
@@ -47,14 +48,18 @@ const Homepage = () => {
       });
   }, [user_id, userid, url, refresh]);
 
-  const filteredBooks =
-    selectedCategory === ""
-      ? books
-      : books.filter((book) => book.category.includes(selectedCategory));
+  // Filter books based on search and category
+  const filteredBooks = books.filter(
+    (book) =>
+      (selectedCategory === "" || book.category.includes(selectedCategory)) &&
+      (searchTerm === "" ||
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <>
       <ToastContainer autoClose={1500} closeOnClick />
+
       {/* Mobile */}
       <div className="sm:hidden ">
         <header className="flex w-[100vw] bg-blue-300 py-3">
@@ -65,9 +70,7 @@ const Homepage = () => {
                 <Menu />
                 <div
                   className="text-3xl cursor-pointer"
-                  onClick={() => {
-                    setShowmenu(!showmenu);
-                  }}
+                  onClick={() => setShowmenu(!showmenu)}
                 >
                   <RiCloseLargeFill />
                 </div>
@@ -75,9 +78,7 @@ const Homepage = () => {
             ) : (
               <div
                 className="text-3xl absolute cursor-pointer"
-                onClick={() => {
-                  setShowmenu(!showmenu);
-                }}
+                onClick={() => setShowmenu(!showmenu)}
               >
                 <RxHamburgerMenu />
               </div>
@@ -89,47 +90,45 @@ const Homepage = () => {
             <div className="p-2 flex items-center gap-2">
               <button
                 className="mr-5 cursor-pointer text-red-500"
-                onClick={() => {
-                  navigate(`/wishlist/${user_id}`);
-                }}
+                onClick={() => navigate(`/wishlist/${user_id}`)}
               >
                 <FaHeart />
               </button>
-              <button
-                onClick={() => {
-                  navigate(`/cart/${user_id}`);
-                }}
-              >
+              <button onClick={() => navigate(`/cart/${user_id}`)}>
                 <FaCartShopping />
               </button>
               <div className="text-red-700">{amount}</div>
             </div>
           </div>
         </header>
-        <div>
+
+        {/* Search Bar */}
+        <div className="flex gap-2 p-2">
           <input
             type="text"
             placeholder="Search For Book"
-            className="py-1 px-3 border-1 rounded-sm"
+            className="py-1 px-3 border rounded-sm w-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <button className="hover:cursor-pointer bg-blue-500 text-white px-3 py-1 rounded">
+            <GoSearch className="text-xl" />
+          </button>
         </div>
-        <div className="flex gap-10">
-          {loading ? null : (
-            <div className="flex gap-10">
-              {loading ? null : (
-                <>
-                  {books.map((book) => (
-                    <BookCard
-                      key={book.id}
-                      book={book}
-                      setRefresh={setRefresh}
-                      selectedCategory={selectedCategory}
-                    />
-                  ))}
-                </>
-              )}
-            </div>
-          )}
+
+        {/* Display Books */}
+        <div className="flex gap-10 flex-wrap">
+          {loading
+            ? null
+            : filteredBooks.map((book) => (
+                <BookCard
+                  key={book.id}
+                  book={book}
+                  setRefresh={setRefresh}
+                  selectedCategory={selectedCategory}
+                  searchTerm={searchTerm}
+                />
+              ))}
         </div>
       </div>
 
@@ -142,9 +141,7 @@ const Homepage = () => {
                 <Menu />
                 <div
                   className="text-3xl cursor-pointer"
-                  onClick={() => {
-                    setShowmenu(!showmenu);
-                  }}
+                  onClick={() => setShowmenu(!showmenu)}
                 >
                   <RiCloseLargeFill />
                 </div>
@@ -152,9 +149,7 @@ const Homepage = () => {
             ) : (
               <div
                 className="text-3xl absolute cursor-pointer"
-                onClick={() => {
-                  setShowmenu(!showmenu);
-                }}
+                onClick={() => setShowmenu(!showmenu)}
               >
                 <RxHamburgerMenu />
               </div>
@@ -163,11 +158,10 @@ const Homepage = () => {
               <input
                 type="text"
                 placeholder="Search For Book"
-                className="py-1 px-3 border-1 rounded-sm"
+                className="py-1 px-3 border rounded-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <button className="hover:cursor-pointer">
-                <GoSearch className="text-2xl" />
-              </button>
             </div>
             <div>
               <h1>Book Store</h1>
@@ -175,41 +169,39 @@ const Homepage = () => {
             <div className="p-2 flex items-center gap-2 text-2xl">
               <button
                 className="mr-5 cursor-pointer text-red-500"
-                onClick={() => {
-                  navigate(`/wishlist/${user_id}`);
-                }}
+                onClick={() => navigate(`/wishlist/${user_id}`)}
               >
                 <FaHeart />
               </button>
               <button
                 className="cursor-pointer"
-                onClick={() => {
-                  navigate(`/cart/${user_id}`);
-                }}
+                onClick={() => navigate(`/cart/${user_id}`)}
               >
                 <FaCartShopping />
               </button>
-
               <div className="text-red-700">{amount}</div>
             </div>
           </div>
         </header>
+
+        {/* Filter Component */}
         <div className="w-full sm:w-1/4">
           <Filter setSelectedCategory={setSelectedCategory} />
         </div>
-        <div className="flex gap-5">
+
+        {/* Display Books */}
+        <div className="flex gap-5 flex-wrap">
           {loading
             ? null
-            : books.map((book) => {
-                return (
-                  <BookCard
-                    key={book.id}
-                    book={book}
-                    setRefresh={setRefresh}
-                    selectedCategory={selectedCategory}
-                  />
-                );
-              })}
+            : filteredBooks.map((book) => (
+                <BookCard
+                  key={book.id}
+                  book={book}
+                  setRefresh={setRefresh}
+                  selectedCategory={selectedCategory}
+                  searchTerm={searchTerm}
+                />
+              ))}
         </div>
       </div>
     </>

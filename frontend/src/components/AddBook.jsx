@@ -30,8 +30,10 @@ const AddBook = ({ refreshBooks, closeModal }) => {
       return category
         .split(",")
         .map((cat) => cat.trim().toLowerCase())
+        .filter((cat) => cat !== "")
         .join(", ");
     };
+
     const formattedCategory = formatCategory(category);
 
     const formData = new FormData();

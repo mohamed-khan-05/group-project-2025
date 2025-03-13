@@ -63,6 +63,7 @@ const Signup = ({ isLogin, setIsLogin }) => {
             type={showpass ? "text" : "password"}
             placeholder="password"
             value={password}
+            maxLength={15}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button

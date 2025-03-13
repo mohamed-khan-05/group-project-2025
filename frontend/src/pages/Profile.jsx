@@ -62,7 +62,7 @@ const Profile = () => {
       <button
         className="border-1 p-3"
         onClick={() => {
-          navigate(`/homepage/${user_id}`);
+          navigate(-1);
         }}
       >
         Back

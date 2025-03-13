@@ -32,7 +32,7 @@ const AdminBookDetails = () => {
       {!book ? null : (
         <button
           onClick={() => {
-            navigate("/adminpage");
+            navigate(-1);
           }}
         >
           Back
