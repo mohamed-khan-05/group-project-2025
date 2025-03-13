@@ -41,7 +41,14 @@ const Wishlist = () => {
       </button>
       <div className="flex gap-10">
         {books.map((book) => {
-          return <BookCard key={book.id} book={book} setRefresh={setRefresh} />;
+          return (
+            <BookCard
+              key={book.id}
+              book={book}
+              setRefresh={setRefresh}
+              selectedCategory=""
+            />
+          );
         })}
       </div>
     </div>

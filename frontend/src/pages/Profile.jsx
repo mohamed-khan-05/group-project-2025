@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../App";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const user_id = useContext(Context);
   const url = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({ name: "" });
   const [oldPassword, setOldPassword] = useState("");
@@ -56,72 +58,84 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <ToastContainer />
-      <h1 className="text-2xl font-bold text-center mb-4">Profile</h1>
+    <>
+      <button
+        className="border-1 p-3"
+        onClick={() => {
+          navigate(`/homepage/${user_id}`);
+        }}
+      >
+        Back
+      </button>
+      <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+        <ToastContainer />
 
-      <form onSubmit={handleUpdate} className="space-y-4">
-        {/* Name Input */}
-        <div>
-          <label className="block text-gray-700 font-medium">Name</label>
-          <input
-            type="text"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
+        <h1 className="text-2xl font-bold text-center mb-4">Profile</h1>
 
-        {/* Old Password Input */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Old Password
-          </label>
-          <input
-            type="password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
+        <form onSubmit={handleUpdate} className="space-y-4">
+          {/* Name Input */}
+          <div>
+            <label className="block text-gray-700 font-medium">Name</label>
+            <input
+              type="text"
+              value={user.name}
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
+              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        {/* New Password Input */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            New Password
-          </label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+          {/* Old Password Input */}
+          <div>
+            <label className="block text-gray-700 font-medium">
+              Old Password
+            </label>
+            <input
+              type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        {/* Confirm Password Input */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Confirm New Password
-          </label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+          {/* New Password Input */}
+          <div>
+            <label className="block text-gray-700 font-medium">
+              New Password
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Update Profile
-        </button>
-      </form>
-    </div>
+          {/* Confirm Password Input */}
+          <div>
+            <label className="block text-gray-700 font-medium">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            Update Profile
+          </button>
+        </form>
+      </div>
+      x
+    </>
   );
 };
 
