@@ -10,6 +10,10 @@ from routes.Reviews import Reviews_bp
 app.register_blueprint(Reviews_bp, url_prefix="/reviews")
 from routes.Wishlist import Wishlist_bp
 app.register_blueprint(Wishlist_bp, url_prefix="/wishlist")
+from routes.Cart import Cart_bp
+app.register_blueprint(Cart_bp, url_prefix="/cart")
+from routes.Orders import Orders_bp
+app.register_blueprint(Orders_bp, url_prefix="/orders")
 
 if __name__ == "__main__":
     with app.app_context():
