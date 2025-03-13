@@ -1,17 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../App";
-import axios from "axios";
+import React from "react";
 
-const Profile = () => {
-  const user_id = useContext(Context);
-  useEffect(() => {
-    axios.post();
-  }, []);
-  return (
-    <div>
-      <h1>Profile</h1>
-    </div>
-  );
-};
+const Profile = () => {};
 
 export default Profile;

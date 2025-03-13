@@ -51,34 +51,22 @@ def profileDelete():
     else:
          return jsonify({"status": "404"})
     
-@LoginSignup_bp.route("/profileedit", methods=["POST"])
-def profileEdit():
-    data = request.get_json()
-    user_id = data.get("user_id")
-    name = data.get("name")
-    email = data.get("email")
-    old_password = data.get("old_password")
-    new_password = data.get("new_password")
-
-    user = User.query.filter_by(id=user_id).first()
-    existingUser = User.query.filter(User.email == email, User.id != user_id).first()
-
-    if (existingUser):
-        return jsonify({"status":"400"})
-
-    if (check_password_hash(user.password,old_password)):
-        user.name = name
-        user.email = email
-        if (new_password):
-            user.password=generate_password_hash(new_password)
-        db.session.commit()
-        return jsonify({"status":"200"})
-    else:
-        return jsonify({"status":"400"})
     
 @LoginSignup_bp.route("/getprofile",methods=["POST"])
 def getprofile():
     data = request.get_json()
     user_id = data.get("user_id")
 
-    
+    user = User.query.filter_by(id=user_id).first()
+
+    if user:
+        return jsonify({
+            "status": "200",
+            "user": {
+                "name": user.name,
+                "email": user.email,
+                "password": hash(user.password)
+            }
+        })
+    else:
+        return jsonify({"status": "404"})
