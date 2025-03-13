@@ -75,3 +75,10 @@ def profileEdit():
         return jsonify({"status":"200"})
     else:
         return jsonify({"status":"400"})
+    
+@LoginSignup_bp.route("/getprofile",methods=["POST"])
+def getprofile():
+    data = request.get_json()
+    user_id = data.get("user_id")
+
+    

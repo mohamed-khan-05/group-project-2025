@@ -14,6 +14,7 @@ import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import BookDetails from "./pages/BookDetails";
+import Profile from "./pages/Profile";
 
 // All
 
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/wishlist/:userid" element={<Wishlist />} />
         <Route path="/cart/:userid" element={<Cart />} />
         <Route path="/orders/:userid" element={<Orders />} />
+        <Route path="/profile/:userid" element={<Profile />} />
       </Routes>
     </Context.Provider>
   );

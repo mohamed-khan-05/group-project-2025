@@ -59,7 +59,10 @@ const Menu = () => {
             <h1>Cart</h1>
           </div>
 
-          <div className=" py-5 border-1 border-blue-400">
+          <div onClick={() => {
+              navigate(`/profile/${user_id}`);
+            }}
+            className="cursor-pointer py-5 border-1 border-blue-400">
             <h1>Profile</h1>
           </div>
 
