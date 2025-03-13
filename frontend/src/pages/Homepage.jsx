@@ -5,6 +5,7 @@ import { Context } from "../App";
 import axios from "axios";
 
 import BookCard from "../components/BookCard";
+import Filter from "../components/Filter";
 
 // Media
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -25,6 +26,7 @@ const Homepage = () => {
   const [books, setBooks] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     if (userid != user_id && user_id != null) {
@@ -44,6 +46,11 @@ const Homepage = () => {
         setAmount(res.data.cart);
       });
   }, [user_id, userid, url, refresh]);
+
+  const filteredBooks =
+    selectedCategory === ""
+      ? books
+      : books.filter((book) => book.category.includes(selectedCategory));
 
   return (
     <>
@@ -116,6 +123,7 @@ const Homepage = () => {
                       key={book.id}
                       book={book}
                       setRefresh={setRefresh}
+                      selectedCategory={selectedCategory}
                     />
                   ))}
                 </>
@@ -186,12 +194,20 @@ const Homepage = () => {
             </div>
           </div>
         </header>
+        <div className="w-full sm:w-1/4">
+          <Filter setSelectedCategory={setSelectedCategory} />
+        </div>
         <div className="flex gap-5">
           {loading
             ? null
             : books.map((book) => {
                 return (
-                  <BookCard key={book.id} book={book} setRefresh={setRefresh} />
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    setRefresh={setRefresh}
+                    selectedCategory={selectedCategory}
+                  />
                 );
               })}
         </div>

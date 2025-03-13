@@ -14,6 +14,8 @@ from routes.Cart import Cart_bp
 app.register_blueprint(Cart_bp, url_prefix="/cart")
 from routes.Orders import Orders_bp
 app.register_blueprint(Orders_bp, url_prefix="/orders")
+from routes.Filter import Filter_bp
+app.register_blueprint(Filter_bp, url_prefix="/filter")
 
 if __name__ == "__main__":
     with app.app_context():

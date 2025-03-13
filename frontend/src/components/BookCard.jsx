@@ -5,7 +5,7 @@ import axios from "axios";
 import { Context } from "../App";
 import { toast } from "react-toastify";
 
-const BookCard = ({ book, setRefresh }) => {
+const BookCard = ({ book, setRefresh, selectedCategory }) => {
   const navigate = useNavigate();
   const user_id = useContext(Context);
   const url = import.meta.env.VITE_BASE_URL;
@@ -80,6 +80,10 @@ const BookCard = ({ book, setRefresh }) => {
         setRefresh((prev) => prev + 1);
       });
   };
+
+  if (selectedCategory !== "" && !book.category.includes(selectedCategory)) {
+    return null;
+  }
 
   return (
     <div className="w-[45vw] sm:w-[200px] border p-2 sm:p-2 rounded shadow-md">

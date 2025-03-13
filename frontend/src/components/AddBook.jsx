@@ -26,11 +26,19 @@ const AddBook = ({ refreshBooks, closeModal }) => {
       return toast.error("Please fill in all required fields.");
     }
 
+    const formatCategory = (category) => {
+      return category
+        .split(",")
+        .map((cat) => cat.trim().toLowerCase())
+        .join(", ");
+    };
+    const formattedCategory = formatCategory(category);
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("author", author);
-    formData.append("category", category);
+    formData.append("category", formattedCategory);
     formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("discount", discount || "0");
