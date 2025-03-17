@@ -102,3 +102,44 @@ def getbookdetails():
         })
     else:
         return jsonify({"status": "404", "message": "Book not found"})
+    
+@Books_bp.route("/editbook", methods=["POST"])
+def editbook():
+    book_id = request.form.get("book_id")
+    title = request.form.get("title")
+    description = request.form.get("description")
+    author = request.form.get("author")
+    category = request.form.get("category")
+    quantity = request.form.get("quantity", type=int)
+    price = request.form.get("price", type=float)
+    discount = request.form.get("discount", type=float, default=0)
+    image = request.files.get("image")
+
+    book = Book.query.filter_by(id=book_id).first()
+    if not book:
+        return jsonify({"status": "404", "message": "Book not found"})
+
+    book.title = title
+    book.description = description
+    book.author = author
+    book.category = category
+    book.quantity = quantity
+    book.price = price
+    book.discount = discount
+
+    if image:
+        if book.image != "BookPlaceholder.png":
+            old_image_path = os.path.join(app.config["UPLOAD_FOLDER"], book.image)
+            if os.path.exists(old_image_path):
+                os.remove(old_image_path)
+
+        filename = secure_filename(image.filename)
+        name, extension = os.path.splitext(filename)
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        image_filename = f"{timestamp}_{name}{extension}"
+        image.save(os.path.join(app.config["UPLOAD_FOLDER"], image_filename))
+        book.image = image_filename
+
+    db.session.commit()
+
+    return jsonify({"status": "200", "message": "Book updated successfully"})

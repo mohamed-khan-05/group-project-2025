@@ -15,6 +15,15 @@ const AddBook = ({ refreshBooks, closeModal }) => {
   const [discount, setDiscount] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
+  const categories = [
+    "Accounting and Informatics",
+    "Applied Sciences",
+    "Arts & Design",
+    "Engineering & Built Environment",
+    "Health Sciences",
+    "Management Sciences",
+  ];
+
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
@@ -26,21 +35,11 @@ const AddBook = ({ refreshBooks, closeModal }) => {
       return toast.error("Please fill in all required fields.");
     }
 
-    const formatCategory = (category) => {
-      return category
-        .split(",")
-        .map((cat) => cat.trim().toLowerCase())
-        .filter((cat) => cat !== "")
-        .join(", ");
-    };
-
-    const formattedCategory = formatCategory(category);
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("author", author);
-    formData.append("category", formattedCategory);
+    formData.append("category", category);
     formData.append("quantity", quantity);
     formData.append("price", price);
     formData.append("discount", discount || "0");
@@ -109,14 +108,21 @@ const AddBook = ({ refreshBooks, closeModal }) => {
           required
           className="border p-2 rounded"
         />
-        <input
-          type="text"
-          placeholder="Category"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-          className="border p-2 rounded"
-        />
+          className="border p-2 rounded h-10 overflow-y-auto"
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+          {categories.map((cat, index) => (
+            <option key={index} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           placeholder="Quantity"

@@ -11,12 +11,13 @@ const Signup = ({ isLogin, setIsLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [studentNum, setStudentNum] = useState("");
   const [showpass, setShowpass] = useState(false);
 
   const onSignup = (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!name || !studentNum || !password) {
       return toast.error("Please fill in all details");
     }
 
@@ -25,10 +26,19 @@ const Signup = ({ isLogin, setIsLogin }) => {
     }
 
     axios
-      .post(`${url}/signup`, { name: name, email: email, password: password })
+      .post(`${url}/signup`, {
+        name: name,
+        studentNum: studentNum,
+        email: email,
+        password: password,
+      })
       .then((res) => {
         if (res.data.status == "200") {
           toast.success("User created Successfully");
+          setName("");
+          setStudentNum("");
+          setPassword("");
+          setEmail("@dut4life.ac.za");
         } else {
           toast.error("User already exists");
         }
@@ -43,6 +53,7 @@ const Signup = ({ isLogin, setIsLogin }) => {
           className="border max-w-[500px] m-2 p-2 rounded-lg bg-white"
           type="text"
           placeholder="Name"
+          maxLength={100}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -50,12 +61,21 @@ const Signup = ({ isLogin, setIsLogin }) => {
         />
         <input
           className="border max-w-[500px] m-2 p-2 rounded-lg bg-white"
+          type="text"
+          placeholder="Student Number"
+          maxLength={10}
+          value={studentNum}
+          onChange={(e) => {
+            setStudentNum(e.target.value);
+            setEmail(e.target.value + "@dut4life.ac.za");
+          }}
+        />
+        <input
+          className="border max-w-[500px] m-2 p-2 rounded-lg bg-gray-300"
           type="email"
           placeholder="email"
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
+          disabled={true}
         />
         <div className="relative max-w-[500px] m-2">
           <input

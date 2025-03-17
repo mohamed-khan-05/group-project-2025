@@ -28,8 +28,15 @@ const Homepage = () => {
   const [amount, setAmount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   useEffect(() => {
+    if (!userid) {
+      return;
+    }
+
     if (userid != user_id && user_id != null) {
       localStorage.removeItem("user_id");
       navigate("/");
@@ -48,13 +55,30 @@ const Homepage = () => {
       });
   }, [user_id, userid, url, refresh]);
 
-  // Filter books based on search and category
-  const filteredBooks = books.filter(
-    (book) =>
-      (selectedCategory === "" || book.category.includes(selectedCategory)) &&
-      (searchTerm === "" ||
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredBooks = books
+    .filter((book) => {
+      const matchesCategory =
+        selectedCategory === "" || book.category.includes(selectedCategory);
+      const matchesSearch =
+        searchTerm === "" ||
+        book.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const bookPrice = book.price ? parseFloat(book.price) : 0;
+      const minPriceNum = minPrice ? parseFloat(minPrice) : 0;
+      const maxPriceNum = maxPrice ? parseFloat(maxPrice) : Infinity;
+      const matchesPrice = bookPrice >= minPriceNum && bookPrice <= maxPriceNum;
+
+      return matchesCategory && matchesSearch && matchesPrice;
+    })
+    .sort((a, b) => {
+      if (sortOption === "name-asc") return a.title.localeCompare(b.title);
+      if (sortOption === "name-desc") return b.title.localeCompare(a.title);
+      if (sortOption === "category-asc")
+        return a.category.localeCompare(b.category);
+      if (sortOption === "category-desc")
+        return b.category.localeCompare(a.category);
+      return 0;
+    });
 
   return (
     <>
@@ -186,7 +210,12 @@ const Homepage = () => {
 
         {/* Filter Component */}
         <div className="w-full sm:w-1/4">
-          <Filter setSelectedCategory={setSelectedCategory} />
+          <Filter
+            setSelectedCategory={setSelectedCategory}
+            setSortOption={setSortOption}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+          />
         </div>
 
         {/* Display Books */}

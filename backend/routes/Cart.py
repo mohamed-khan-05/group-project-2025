@@ -2,10 +2,14 @@ import os
 from flask import Blueprint, jsonify, request
 from models import db, Cart, Book, User, Orders
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 
 BASE_URL = os.getenv("BASE_URL")
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
+PAYSTACK_INIT_URL = "https://api.paystack.co/transaction/initialize"
+PAYSTACK_VERIFY_URL = "https://api.paystack.co/transaction/verify/"
 
 Cart_bp = Blueprint("Cart_bp", __name__)
 
@@ -89,3 +93,61 @@ def getcart():
             })
 
     return jsonify({"cart": cart_items})
+
+@Cart_bp.route("/get-user-email", methods=["GET"])
+def get_user_email():
+    user_id = request.args.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "Missing user_id"}), 400
+
+    user = User.query.filter_by(id=user_id).first()
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify({"email": user.email})
+
+@Cart_bp.route("/create-paystack-transaction", methods=["POST"])
+def create_paystack_transaction():
+    data = request.get_json()
+    amount = data.get("amount")
+    email = data.get("email")
+
+    if not amount or not email:
+        return jsonify({"error": "Missing amount or email"}), 400
+
+    try:
+       amount = int(round(float(amount) * 100))  # Convert ZAR to Kobo
+    except ValueError:
+        return jsonify({"error": "Invalid amount format"}), 400
+
+    headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}", "Content-Type": "application/json"}
+    payload = {"email": email, "amount": amount}
+
+    response = requests.post(PAYSTACK_INIT_URL, json=payload, headers=headers)
+    result = response.json()
+
+    if response.status_code == 200 and "data" in result:
+        return jsonify({
+            "authorization_url": result["data"]["authorization_url"],
+            "reference": result["data"]["reference"],
+        })
+    return jsonify({"error": "Failed to initialize payment", "details": result}), 400
+
+@Cart_bp.route("/verify-paystack-payment", methods=["POST"])
+def verify_paystack_payment():
+    data = request.get_json()
+    reference = data.get("reference")
+
+    if not reference:
+        return jsonify({"error": "Missing payment reference"}), 400
+
+    headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
+    response = requests.get(f"{PAYSTACK_VERIFY_URL}{reference}", headers=headers)
+    result = response.json()
+
+    if response.status_code == 200 and result.get("data", {}).get("status") == "success":
+        return jsonify({"message": "Payment successful", "status": "success"})
+    
+    return jsonify({"error": "Payment verification failed", "details": result}), 400

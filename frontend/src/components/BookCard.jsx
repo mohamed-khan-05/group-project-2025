@@ -49,12 +49,14 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
   };
 
   const addtocart = () => {
+    const finalPrice = book.price - (book.price * book.discount) / 100;
+
     axios
       .post(`${url}/cart/addtocart`, {
         user_id: parseInt(user_id),
         book_id: book.id,
         quantity: 1,
-        total: book.price,
+        total: finalPrice,
         discount_amount: book.discount,
       })
       .then((res) => {
@@ -76,7 +78,6 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       })
       .then(() => {
         setIncart(false);
-        toast.success("Removed from Cart");
         setRefresh((prev) => prev + 1);
       });
   };

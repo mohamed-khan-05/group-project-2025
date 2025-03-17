@@ -22,6 +22,7 @@ def login():
 def signup():
     data = request.get_json()
     name = data.get("name")
+    student_num = data.get("studentNum")
     email = data.get("email")
     password = data.get("password")
 
@@ -31,7 +32,7 @@ def signup():
         return jsonify({"status":"404"})
     else:
         hashed_password = generate_password_hash(password)
-        new_user = User(name=name, email=email, password=hashed_password)
+        new_user = User(name=name, student_num=student_num, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return jsonify({"status":"200"}), 201
