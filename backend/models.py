@@ -49,6 +49,8 @@ class Cart(db.Model):
     total = db.Column(db.Numeric(10, 2), nullable=False)
     discount_amount = db.Column(db.Numeric(5, 2), nullable=False, default=0)
 
+    book = db.relationship('Book', backref='cart_items', lazy=True)
+
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

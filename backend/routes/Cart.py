@@ -151,3 +151,27 @@ def verify_paystack_payment():
         return jsonify({"message": "Payment successful", "status": "success"})
     
     return jsonify({"error": "Payment verification failed", "details": result}), 400
+
+@Cart_bp.route("/update-quantity", methods=["POST"])
+def update_quantity():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    book_id = data.get("book_id")
+    quantity = data.get("quantity")
+
+    cart = Cart.query.filter_by(user_id=user_id, book_id=book_id).first()
+
+    if cart is None:
+        return jsonify({"message": "Cart not found"}), 404
+
+    if quantity < 1:
+        db.session.delete(cart)
+        db.session.commit()
+        return jsonify({"message": "Item removed from cart"})
+
+    cart.quantity = quantity
+    cart.total = cart.quantity * cart.book.price
+
+    db.session.commit()
+    return jsonify({"message": "success", "total": cart.total})
+

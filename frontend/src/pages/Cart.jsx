@@ -3,6 +3,9 @@ import axios from "axios";
 import { Context } from "../App";
 import { useNavigate } from "react-router-dom";
 
+// Media
+import { ArrowLeft } from "lucide-react";
+
 const Cart = () => {
   const url = import.meta.env.VITE_BASE_URL;
   const [cartItems, setCartItems] = useState([]);
@@ -23,7 +26,6 @@ const Cart = () => {
         console.error("Error fetching cart items", error);
       }
     };
-
     fetchCartItems();
   }, [user_id]);
 
@@ -49,28 +51,56 @@ const Cart = () => {
     fetchUserEmail();
   }, [user_id]);
 
+  const updateQuantity = async (bookId, newQuantity, price) => {
+    if (newQuantity < 1) {
+      if (!window.confirm("Are you sure you want to remove this item?")) {
+        return;
+      }
+    }
+
+    try {
+      const response = await axios.post(`${url}/cart/update-quantity`, {
+        user_id,
+        book_id: bookId,
+        quantity: newQuantity,
+      });
+
+      if (response.data.message === "Item removed from cart") {
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.id !== bookId)
+        );
+      } else {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === bookId
+              ? { ...item, quantity: newQuantity, total: response.data.total }
+              : item
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating quantity", error);
+    }
+  };
+
   const handleCheckout = async () => {
     if (!userEmail) {
       alert("User email not found. Please log in.");
       return;
     }
-
-    const amount = parseFloat(totalAmount); // Convert to float
-
+    const amount = parseFloat(totalAmount);
     if (isNaN(amount) || amount <= 0) {
       alert("Invalid cart total. Please try again.");
       return;
     }
-
     try {
       const response = await axios.post(
         `${url}/cart/create-paystack-transaction`,
         {
-          amount: amount, // Ensure it's a valid number
+          amount: amount,
           email: userEmail,
         }
       );
-
       if (response.data.authorization_url) {
         window.location.href = response.data.authorization_url;
       } else {
@@ -85,11 +115,11 @@ const Cart = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <button
-        onClick={() => {
-          navigate(-1);
-        }}
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
       >
-        Back
+        <ArrowLeft className="w-5 h-5 mr-1" />
+        <span className="text-sm font-medium">Back</span>
       </button>
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Shopping Cart</h2>
 
@@ -106,7 +136,25 @@ const Cart = () => {
                 <h3 className="text-lg font-semibold text-gray-900">
                   {item.name}
                 </h3>
-                <p className="text-gray-600">Quantity: {item.quantity}</p>
+                <div className="flex items-center space-x-4">
+                  <button
+                    className="bg-gray-300 px-3 py-1 rounded-md"
+                    onClick={() =>
+                      updateQuantity(item.id, item.quantity - 1, item.price)
+                    }
+                  >
+                    -
+                  </button>
+                  <p className="text-gray-600">{item.quantity}</p>
+                  <button
+                    className="bg-gray-300 px-3 py-1 rounded-md"
+                    onClick={() =>
+                      updateQuantity(item.id, item.quantity + 1, item.price)
+                    }
+                  >
+                    +
+                  </button>
+                </div>
                 <p className="text-gray-800 font-bold text-lg">
                   ZAR {item.total}
                 </p>
