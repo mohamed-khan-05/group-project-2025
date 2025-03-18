@@ -186,8 +186,6 @@ def verify_paystack_payment():
                     purchase_amount=item.total,
                 )
                 book.quantity -= item.quantity
-                if (book.quantity<=0):
-                    book.status="Unavailable"
                 db.session.add(new_order)
 
             Cart.query.filter_by(user_id=user_id).delete()
