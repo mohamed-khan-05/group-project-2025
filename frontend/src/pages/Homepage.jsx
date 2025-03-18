@@ -31,6 +31,7 @@ const Homepage = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const [pop, setPop] = useState([]);
 
   useEffect(() => {
     if (!userid) {
@@ -46,6 +47,10 @@ const Homepage = () => {
     axios.get(`${url}/books/getallbooks`).then((res) => {
       setBooks(res.data);
       setLoading(false);
+    });
+
+    axios.get(`${url}/books/popular`).then((res) => {
+      setPop(res.data);
     });
 
     axios
@@ -118,7 +123,7 @@ const Homepage = () => {
             </div>
 
             {/* Branding */}
-            <div className="text-xl font-semibold tracking-wide flex-1 text-center">
+            <div className="font-semibold tracking-wide flex-1 text-center">
               📚 Book Store
             </div>
 
@@ -153,7 +158,7 @@ const Homepage = () => {
           </header>
         </div>
         {/* PC Header */}
-        <div className="hidden sm:block">
+        <div className="hidden sm:block mb-2">
           <header className="sticky top-0 flex w-full bg-gradient-to-r from-blue-500 to-blue-700 shadow-md py-4 pr-4 text-white">
             <div className="flex w-full justify-between items-center">
               {showmenu ? (
@@ -224,7 +229,7 @@ const Homepage = () => {
         </div>
 
         <div className="sm:flex block">
-          <div className="flex w-[100vw] bg-white rounded-lg py-1 sm:hidden">
+          <div className="flex w-[100vw] bg-white rounded-lg py-1 pt-[10vh] sm:hidden">
             <input
               type="text"
               placeholder="Search for a book..."
@@ -234,7 +239,7 @@ const Homepage = () => {
             />
           </div>
           {/* Filter Component */}
-          <div>
+          <div className="w-[100vw] sm:w-full sm:max-w-82">
             <Filter
               setSelectedCategory={setSelectedCategory}
               setSortOption={setSortOption}
@@ -244,18 +249,50 @@ const Homepage = () => {
           </div>
 
           {/* Display Books */}
-          <div className="flex gap-5 flex-wrap">
-            {loading
-              ? null
-              : filteredBooks.map((book) => (
-                  <BookCard
-                    key={book.id}
-                    book={book}
-                    setRefresh={setRefresh}
-                    selectedCategory={selectedCategory}
-                    searchTerm={searchTerm}
-                  />
-                ))}
+          <div className="flex flex-col gap-8 sm:h-[91vh] h-[80vh] overflow-y-scroll">
+            {/* Popular Books Section */}
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Popular Books
+              </h2>
+              <div className="grid grid-cols-2 sm:flex gap-5">
+                {loading ? (
+                  <div>Loading...</div>
+                ) : (
+                  pop.map((book) => (
+                    <BookCard
+                      key={book.id}
+                      book={book}
+                      setRefresh={setRefresh}
+                      selectedCategory={selectedCategory}
+                      searchTerm={searchTerm}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* All Books Section */}
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                All Books
+              </h2>
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-5">
+                {loading ? (
+                  <div>Loading...</div>
+                ) : (
+                  filteredBooks.map((book) => (
+                    <BookCard
+                      key={book.id}
+                      book={book}
+                      setRefresh={setRefresh}
+                      selectedCategory={selectedCategory}
+                      searchTerm={searchTerm}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

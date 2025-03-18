@@ -23,7 +23,7 @@ const LoginSignup = ({ setUser_id }) => {
       <div className="sm:hidden">
         <div className="flex items-center justify-center h-screen bg-blue-100">
           <div className="h-9/10 p-3 m-5 bg-white rounded-lg overflow-hidden">
-            <h1 className="text-3xl font-bold text-center mb-6 py-2">
+            <h1 className="text-2xl font-bold text-center mb-1 py-2">
               Welcome to Book Store
             </h1>
             <p className="text-center text-gray-700">
@@ -35,8 +35,8 @@ const LoginSignup = ({ setUser_id }) => {
               }`}
               style={{ width: "200%" }}
             >
-              <div className={isLogin ? null : "w-1/2 sm:p-8 pt-10"}></div>
-              <div className="w-1/2 sm:p-8 pt-10">
+              <div className={isLogin ? null : "w-1/2 sm:p-8 pt-1"}></div>
+              <div className="w-1/2 sm:p-8 pt-1">
                 {isLogin ? (
                   <Login
                     setUser_id={setUser_id}

@@ -152,7 +152,7 @@ const Cart = () => {
   }, [url]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-4xl mx-auto p-6 sm:py-6 py-10 bg-white shadow-lg rounded-lg">
       <button
         onClick={() => navigate(`/homepage/${user_id}`)}
         className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"

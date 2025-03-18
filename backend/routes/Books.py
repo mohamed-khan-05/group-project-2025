@@ -2,7 +2,8 @@ import datetime
 import os
 from config import app
 from flask import Blueprint, jsonify, request
-from models import db, Book, Review, User
+from models import db, Book, Review, User, Orders
+from sqlalchemy import func
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
@@ -139,7 +140,6 @@ def editbook():
         image_filename = f"{timestamp}_{name}{extension}"
         image.save(os.path.join(app.config["UPLOAD_FOLDER"], image_filename))
         book.image = image_filename
-
     db.session.commit()
 
     return jsonify({"status": "200", "message": "Book updated successfully"})
@@ -157,3 +157,29 @@ def deletebook():
         db.session.delete(book)
         db.session.commit()
         return jsonify({"message":"book deleted"})
+    
+@Books_bp.route("/popular", methods=["GET"])
+def popular():
+    pop_books = db.session.query(
+        Orders.book_id, 
+        func.sum(Orders.quantity).label('total_quantity')
+    ).group_by(Orders.book_id)  \
+    .order_by(func.sum(Orders.quantity).desc()) \
+    .limit(3)
+
+    popular_books = []
+    for book_order in pop_books:
+        book = Book.query.get(book_order.book_id)
+        popular_books.append({
+            "id": book.id,
+            "title": book.title,
+            "description": book.description,
+            "author": book.author,
+            "category": book.category,
+            "price":book.price,
+            "discount":book.discount,
+            "quantity": book.quantity,
+            "image": f"{BASE_URL}/uploads/books/{book.image}"
+        })
+    
+    return jsonify(popular_books)

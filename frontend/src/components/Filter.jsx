@@ -39,7 +39,7 @@ const Filter = ({
   };
 
   return (
-    <div className="bg-white p-5 shadow-md rounded-lg border border-gray-200 w-82">
+    <div className="bg-white p-5 shadow-md rounded-lg border border-gray-200 w-full sm:max-w-72">
       <h2 className="text-lg font-semibold mb-4 text-gray-800 text-center">
         Filter & Sort
       </h2>

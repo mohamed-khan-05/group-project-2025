@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../App";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify"; // ✅ Import toast
+import { toast, ToastContainer } from "react-toastify"; // ✅ Import toast
 
 const BookDetails = () => {
   const url = import.meta.env.VITE_BASE_URL;
@@ -65,6 +65,9 @@ const BookDetails = () => {
       setRating(0);
       setComment("");
       toast.success("Review submitted successfully!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error("Error submitting review", error);
       toast.error("Failed to submit review.");
@@ -147,12 +150,13 @@ const BookDetails = () => {
       setCounter(counter - 1);
     } catch (error) {
       console.error("Error updating quantity", error);
-      toast.error("Failed to update quantity.");
+      toast.error(`Only ${quantity} left`);
     }
   };
 
   return (
     <div className="container mx-auto p-6 max-w-4xl bg-white shadow-lg rounded-lg">
+      <ToastContainer hideProgressBar />
       <button
         onClick={() =>
           window.history.length > 1
@@ -175,11 +179,13 @@ const BookDetails = () => {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <h1 className="text-3xl font-bold">{book.title}</h1>
+            <h1 className="text-3xl font-bold break-words">{book.title}</h1>
             <p className="text-lg text-gray-700">by {book.author}</p>
             <p className="text-sm text-gray-500">Category: {book.category}</p>
-            <p className="text-gray-600">{book.description}</p>
-            <p className="text-2xl text-green-600 font-bold">R {actualPrice}</p>
+            <p className="text-gray-600 break-words">{book.description}</p>
+            <p className="text-2xl text-green-600 font-bold">
+              R {actualPrice.toFixed(2)}
+            </p>
 
             <div className="flex flex-col gap-4 mt-4">
               {incart ? (

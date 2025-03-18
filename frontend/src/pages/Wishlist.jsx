@@ -33,7 +33,7 @@ const Wishlist = () => {
   }, [user_id, refresh]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen bg-gray-900 text-white sm:p-6 p-2">
       <div className="max-w-6xl mx-auto">
         <button
           onClick={() => navigate(`/homepage/${user_id}`)}
@@ -51,7 +51,7 @@ const Wishlist = () => {
             Your wishlist is empty.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
             {books.map((book) => (
               <BookCard
                 key={book.id}

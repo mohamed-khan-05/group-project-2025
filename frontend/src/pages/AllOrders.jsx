@@ -9,7 +9,7 @@ const AllOrders = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("Pending");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const url = import.meta.env.VITE_BASE_URL;
@@ -45,18 +45,16 @@ const AllOrders = () => {
     fetchOrders();
   }, []);
 
-  // Filter orders based on search term and status
   const filteredOrders = orders.filter((order) => {
-    const matchesSearch = order.user_id.toString().includes(searchTerm);
+    const matchesSearch = order.student_num.toString().includes(searchTerm);
     const matchesStatus =
       statusFilter === "All" || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  // Format purchase_date to a more user-friendly format
   const formatDate = (dateString) => {
-    const date = new Date(dateString); // Convert string to Date object
-    return date.toLocaleDateString(); // Format to 'MM/DD/YYYY'
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
   };
 
   return (
@@ -117,6 +115,9 @@ const AllOrders = () => {
               </p>
               <p className="text-gray-600 mb-2">
                 <strong>Book ID:</strong> {order.book_id}
+              </p>
+              <p className="text-gray-600 mb-2">
+                <strong>Book Title:</strong> {order.book_title}
               </p>
               <p className="text-gray-600 mb-2">
                 <strong>Quantity:</strong> {order.quantity}

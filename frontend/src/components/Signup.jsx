@@ -95,7 +95,7 @@ const Signup = ({ isLogin, setIsLogin }) => {
           </button>
         </div>
         <button
-          className="border max-w-30 rounded-full bg-blue-700 text-white text-xl px-5 py-1 my-5 cursor-pointer hover:bg-blue-600"
+          className="border max-w-30 rounded-full bg-blue-700 text-white text-xl px-5 py-1 sm:my-5 my-2 cursor-pointer hover:bg-blue-600"
           type="submit"
         >
           Signup

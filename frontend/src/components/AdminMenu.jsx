@@ -13,25 +13,17 @@ const AdminMenu = () => {
   };
 
   return (
-    <div className="flex justify-evenly border p-2 mb-10 bg-blue-200">
-      {/* <h1
-        className="bg-white py-1 px-3 cursor-pointer"
-        onClick={() => {
-          navigate("/adminpage");
-        }}
-      >
-        Home
-      </h1> */}
+    <div className="flex gap-2 justify-evenly border p-2 sm:mb-10 mb-5 bg-blue-200">
       <h1
-        className="bg-white py-1 px-3 cursor-pointer"
+        className="bg-white py-1 sm:px-3 px-2 cursor-pointer rounded-sm"
         onClick={() => {
           navigate("/managebooks");
         }}
       >
-        Manage Books
+        Books
       </h1>
       <h1
-        className="bg-white py-1 px-3 cursor-pointer"
+        className="bg-white py-1 sm:px-3 px-2 cursor-pointer rounded-sm"
         onClick={() => {
           navigate("/allorders");
         }}
@@ -39,7 +31,7 @@ const AdminMenu = () => {
         Orders
       </h1>
       <h1
-        className="bg-white py-1 px-3 cursor-pointer"
+        className="bg-white py-1 sm:px-3 px-2 cursor-pointer rounded-sm"
         onClick={() => {
           navigate("/profile/1");
         }}
@@ -47,7 +39,7 @@ const AdminMenu = () => {
         Profile
       </h1>
       <button
-        className="border-1 bg-white py-1 px-3"
+        className="bg-white py-1 sm:px-3 px-2 text-red-500"
         onClick={() => {
           logout();
         }}

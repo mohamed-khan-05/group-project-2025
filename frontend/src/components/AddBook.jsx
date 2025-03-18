@@ -88,6 +88,7 @@ const AddBook = ({ refreshBooks, closeModal }) => {
         <input
           type="text"
           placeholder="Title"
+          maxLength={50}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -95,6 +96,7 @@ const AddBook = ({ refreshBooks, closeModal }) => {
         />
         <textarea
           placeholder="Description"
+          maxLength={150}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
@@ -103,6 +105,7 @@ const AddBook = ({ refreshBooks, closeModal }) => {
         <input
           type="text"
           placeholder="Author"
+          maxLength={50}
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           required
@@ -126,6 +129,7 @@ const AddBook = ({ refreshBooks, closeModal }) => {
         <input
           type="text"
           inputMode="numeric"
+          maxLength={10}
           placeholder="Quantity"
           value={quantity}
           onChange={(e) => {
@@ -140,6 +144,7 @@ const AddBook = ({ refreshBooks, closeModal }) => {
 
         <input
           type="text"
+          maxLength={10}
           inputMode="decimal"
           placeholder="Price"
           value={price}

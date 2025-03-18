@@ -48,7 +48,7 @@ const AdminBookCard = ({ book }) => {
             className="w-full sm:w-[200px] sm:h-[250px] object-contain rounded mb-1"
           />
         </div>
-        <h3 className="text-lg font-semibold">{book.title}</h3>
+        <h3 className="text-lg font-semibold break-words">{book.title}</h3>
         {book.discount > 0 ? (
           <div className="sm:flex gap-3 sm:gap-5">
             <h1 className="text-yellow-600 line-through sm:text-lg text-sm">

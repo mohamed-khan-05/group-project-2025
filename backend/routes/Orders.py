@@ -49,16 +49,18 @@ def addtoorder():
 
 @Orders_bp.route('/getallorders', methods=['GET'])
 def getallorders():
-    orders=Orders.query.all()
+    orders=Orders.query.order_by(Orders.id.desc()).all()
     orders_list =[]
     for order in orders:
         user = User.query.filter_by(id=order.user_id).first()
+        book = Book.query.filter_by(id=order.book_id).first()
         orders_list.append(
             {
                 "id":order.id,
                 "student_num":user.student_num,
                 "user_id":order.user_id,
                 "book_id":order.book_id,
+                "book_title":book.title,
                 "quantity":order.quantity,
                 "purchase_date": str(order.purchase_date),
                 "purchase_amount":order.purchase_amount,

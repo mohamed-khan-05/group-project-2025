@@ -178,12 +178,16 @@ def verify_paystack_payment():
                 return jsonify({"error": "No cart items found for user"}), 400
 
             for item in cart_items:
+                book = Book.query.filter_by(id=item.book_id).first()
                 new_order = Orders(
                     user_id=user_id,
                     book_id=item.book_id,
                     quantity=item.quantity,
                     purchase_amount=item.total,
                 )
+                book.quantity -= item.quantity
+                if (book.quantity<=0):
+                    book.status="Unavailable"
                 db.session.add(new_order)
 
             Cart.query.filter_by(user_id=user_id).delete()

@@ -87,7 +87,10 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
   }
 
   return (
-    <div className="w-[45vw] sm:w-[200px] border p-2 sm:p-2 rounded shadow-md bg-white">
+    <div
+      style={{ display: book.quantity > 0 ? "block" : "none" }}
+      className="w-[45vw] sm:w-[200px] max-h-[50vh] overflow-y-auto border p-2 sm:p-2 rounded shadow-md bg-white"
+    >
       <div>
         <button
           onClick={() => (inlist ? removefromlist() : addtolist())}
@@ -108,7 +111,9 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       </div>
 
       <div className="flex justify-between">
-        <h3 className="text-lg font-semibold">{book.title}</h3>
+        <h3 className="text-lg font-semibold break-words w-[85%]">
+          {book.title}
+        </h3>
         <button
           onClick={() => (incart ? removefromcart() : addtocart())}
           className={incart ? `cursor-pointer text-blue-500` : "cursor-pointer"}
@@ -123,7 +128,7 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
             R {book.price}
           </h1>
           <h1 className="text-green-600 sm:text-lg text-[1.2rem]">
-            R {actualPrice}
+            R {actualPrice.toFixed(2)}
           </h1>
         </div>
       ) : (
@@ -134,7 +139,7 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       {available ? (
         <p className="text-blue-500">Available</p>
       ) : (
-        <p className="text-red-500">Sold-out</p>
+        <p className="text-red-500">Unavailable</p>
       )}
     </div>
   );

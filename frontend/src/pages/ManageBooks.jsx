@@ -28,47 +28,7 @@ const ManageBooks = () => {
 
   return (
     <>
-      {/* Mobile View */}
-      <div className="flex sm:hidden">
-        {/* Add component */}
-        {showAdd && (
-          <div>
-            <div></div>
-            <div>
-              <div>
-                <button onClick={() => setShowAdd(false)}>
-                  <AiOutlineClose size={32} />
-                </button>
-                <AddBook
-                  refreshBooks={fetchBooks}
-                  closeModal={() => setShowAdd(false)}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/*  */}
-        <div>
-          <h2>Manage Books</h2>
-          <div>
-            <AdminMenu />
-          </div>
-          <button onClick={() => setShowAdd(true)}>Add Book</button>
-
-          <div className="flex flex-wrap gap-5">
-            {books.map((book) => (
-              <AdminBookCard key={book.id} book={book} />
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* -------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      {/* -------------------------------------------------------------------------------------------------------------------------------------------------- */}
-      {/* -------------------------------------------------------------------------------------------------------------------------------------------------- */}
-
-      {/* PC View */}
-      <div className="hidden sm:block">
+      <div>
         {/* Add component */}
         {showAdd && (
           <div className="w-[100vw] h-[100vh] fixed flex justify-center items-center">
@@ -90,9 +50,7 @@ const ManageBooks = () => {
           </div>
         )}
 
-        {/*  */}
         <div>
-          <h2>Manage Books</h2>
           <div>
             <AdminMenu />
           </div>
