@@ -94,6 +94,12 @@ def getcart():
 
     return jsonify({"cart": cart_items})
 
+@Cart_bp.route("/paystack-webhook", methods=["POST"])
+def paystack_webhook():
+    event = request.get_json()
+    print("Webhook Received:", event)
+    return jsonify({"status": "received"}), 200
+
 @Cart_bp.route("/get-user-email", methods=["GET"])
 def get_user_email():
     user_id = request.args.get("user_id")
@@ -108,11 +114,14 @@ def get_user_email():
 
     return jsonify({"email": user.email})
 
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+
 @Cart_bp.route("/create-paystack-transaction", methods=["POST"])
 def create_paystack_transaction():
     data = request.get_json()
     amount = data.get("amount")
     email = data.get("email")
+    user_id = data.get("user_id")
 
     if not amount or not email:
         return jsonify({"error": "Missing amount or email"}), 400
@@ -123,7 +132,8 @@ def create_paystack_transaction():
         return jsonify({"error": "Invalid amount format"}), 400
 
     headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}", "Content-Type": "application/json"}
-    payload = {"email": email, "amount": amount}
+    payload = {"email": email, "amount": amount,"currency": "ZAR",
+        "callback_url": f"{FRONTEND_URL}payment-success?user_id={user_id}",}
 
     response = requests.post(PAYSTACK_INIT_URL, json=payload, headers=headers)
     result = response.json()
@@ -139,25 +149,44 @@ def create_paystack_transaction():
 def verify_paystack_payment():
     data = request.get_json()
     reference = data.get("reference")
-
+    
+    print(f"Verifying reference: {reference}")  # Debug log
+    
     if not reference:
         return jsonify({"error": "Missing payment reference"}), 400
 
     headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
-    response = requests.get(f"{PAYSTACK_VERIFY_URL}{reference}", headers=headers)
+    try:
+        response = requests.get(f"{PAYSTACK_VERIFY_URL}{reference}", headers=headers)
+        response.raise_for_status()  # Raise exception for HTTP errors
+    except Exception as e:
+        print(f"Paystack API Error: {str(e)}")
+        return jsonify({"error": "Payment gateway error", "details": str(e)}), 500
+
     result = response.json()
+    print("Paystack Verification Response:", result)  # Debug log
 
     if response.status_code == 200 and result.get("data", {}).get("status") == "success":
-        new_Order = Orders(
-            user_id=1,
-            book_id=1,
-            quantity=1,
-            purchase_amount=100,
-            discount_amount=10
-        )
-        db.session.add(new_Order)
-        db.session.commit()
-        return jsonify({"message": "Payment successful", "status": "success"})
+        try:
+            # Create order from actual transaction data
+            amount = result["data"]["amount"] / 100  # Convert from kobo
+            email = result["data"]["customer"]["email"]
+            
+            new_order = Orders(
+                user_id=1,  # Replace with actual user ID from session
+                book_id=1,  # Replace with actual book ID from cart
+                quantity=1,
+                purchase_amount=amount,
+                discount_amount=0
+            )
+            db.session.add(new_order)
+            db.session.commit()
+            return jsonify({"message": "Payment successful", "status": "success"})
+        
+        except Exception as e:
+            db.session.rollback()
+            print(f"Order Creation Error: {str(e)}")
+            return jsonify({"error": "Order creation failed", "details": str(e)}), 500
     
     return jsonify({"error": "Payment verification failed", "details": result}), 400
 

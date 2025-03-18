@@ -104,6 +104,7 @@ const Cart = () => {
       const response = await axios.post(
         `${url}/cart/create-paystack-transaction`,
         {
+          user_id: user_id,
           amount: amount,
           email: userEmail,
         }
@@ -147,7 +148,7 @@ const Cart = () => {
       verifyPaymentAndCreateOrder(reference);
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [navigate, url]);
+  }, [url]);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">

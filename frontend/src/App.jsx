@@ -15,6 +15,7 @@ import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import BookDetails from "./pages/BookDetails";
 import Profile from "./pages/Profile";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 // All
 
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/cart/:userid" element={<Cart />} />
         <Route path="/orders/:userid" element={<Orders />} />
         <Route path="/profile/:userid" element={<Profile />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
       </Routes>
     </Context.Provider>
   );
