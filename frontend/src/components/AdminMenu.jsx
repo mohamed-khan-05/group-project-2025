@@ -13,15 +13,15 @@ const AdminMenu = () => {
   };
 
   return (
-    <div className="flex justify-evenly border p-2 mb-10 bg-amber-200">
-      <h1
+    <div className="flex justify-evenly border p-2 mb-10 bg-blue-200">
+      {/* <h1
         className="bg-white py-1 px-3 cursor-pointer"
         onClick={() => {
           navigate("/adminpage");
         }}
       >
         Home
-      </h1>
+      </h1> */}
       <h1
         className="bg-white py-1 px-3 cursor-pointer"
         onClick={() => {
@@ -30,7 +30,14 @@ const AdminMenu = () => {
       >
         Manage Books
       </h1>
-      <h1 className="line-through">Orders</h1>
+      <h1
+        className="bg-white py-1 px-3 cursor-pointer"
+        onClick={() => {
+          navigate("/allorders");
+        }}
+      >
+        Orders
+      </h1>
       <h1
         className="bg-white py-1 px-3 cursor-pointer"
         onClick={() => {

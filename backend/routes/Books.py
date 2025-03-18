@@ -143,3 +143,17 @@ def editbook():
     db.session.commit()
 
     return jsonify({"status": "200", "message": "Book updated successfully"})
+
+@Books_bp.route("/deletebook", methods=["POST"])
+def deletebook():
+    data = request.get_json()
+    book_id = data.get("book_id")
+
+    book = Book.query.filter_by(id=book_id).first()
+
+    if not book:
+        return jsonify({"message":"Book not found"})
+    else:
+        db.session.delete(book)
+        db.session.commit()
+        return jsonify({"message":"book deleted"})

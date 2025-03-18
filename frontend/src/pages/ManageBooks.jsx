@@ -96,9 +96,14 @@ const ManageBooks = () => {
           <div>
             <AdminMenu />
           </div>
-          <button onClick={() => setShowAdd(true)}>Add Book</button>
+          <button
+            className="bg-blue-600 px-2 py-1 text-white rounded-sm mb-2 ml-2"
+            onClick={() => setShowAdd(true)}
+          >
+            Add Book
+          </button>
 
-          <div className="flex flex-wrap gap-10 mb-10">
+          <div className="flex flex-wrap gap-2 mb-10">
             {books.map((book) => (
               <AdminBookCard key={book.id} book={book} />
             ))}

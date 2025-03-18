@@ -66,6 +66,7 @@ def getprofile():
             "user": {
                 "name": user.name,
                 "email": user.email,
+                "student_num":user.student_num,
                 "password": hash(user.password)
             }
         })

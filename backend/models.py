@@ -33,7 +33,6 @@ class Orders(db.Model):
     quantity = db.Column(db.Integer)
     purchase_date = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     purchase_amount = db.Column(db.Numeric(10, 2), nullable=False)
-    discount_amount = db.Column(db.Numeric(5, 2), nullable=False, default=0)
     status = db.Column(db.String(100), default="Pending")
 
 class Wishlist(db.Model):

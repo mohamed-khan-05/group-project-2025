@@ -123,17 +123,22 @@ def create_paystack_transaction():
     email = data.get("email")
     user_id = data.get("user_id")
 
-    if not amount or not email:
-        return jsonify({"error": "Missing amount or email"}), 400
+    if not amount or not email or not user_id:
+        return jsonify({"error": "Missing required fields"}), 400
 
     try:
-       amount = int(round(float(amount) * 100))
+        amount = int(round(float(amount) * 100))
     except ValueError:
         return jsonify({"error": "Invalid amount format"}), 400
 
     headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}", "Content-Type": "application/json"}
-    payload = {"email": email, "amount": amount,"currency": "ZAR",
-        "callback_url": f"{FRONTEND_URL}payment-success?user_id={user_id}",}
+    payload = {
+        "email": email,
+        "amount": amount,
+        "currency": "ZAR",
+        "callback_url": f"{FRONTEND_URL}/payment-success?user_id={user_id}",
+        "metadata": {"user_id": user_id}
+    }
 
     response = requests.post(PAYSTACK_INIT_URL, json=payload, headers=headers)
     result = response.json()
@@ -149,46 +154,47 @@ def create_paystack_transaction():
 def verify_paystack_payment():
     data = request.get_json()
     reference = data.get("reference")
-    
-    print(f"Verifying reference: {reference}")  # Debug log
-    
+
     if not reference:
         return jsonify({"error": "Missing payment reference"}), 400
 
     headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
     try:
         response = requests.get(f"{PAYSTACK_VERIFY_URL}{reference}", headers=headers)
-        response.raise_for_status()  # Raise exception for HTTP errors
-    except Exception as e:
-        print(f"Paystack API Error: {str(e)}")
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
         return jsonify({"error": "Payment gateway error", "details": str(e)}), 500
 
     result = response.json()
-    print("Paystack Verification Response:", result)  # Debug log
 
     if response.status_code == 200 and result.get("data", {}).get("status") == "success":
         try:
-            # Create order from actual transaction data
-            amount = result["data"]["amount"] / 100  # Convert from kobo
-            email = result["data"]["customer"]["email"]
-            
-            new_order = Orders(
-                user_id=1,  # Replace with actual user ID from session
-                book_id=1,  # Replace with actual book ID from cart
-                quantity=1,
-                purchase_amount=amount,
-                discount_amount=0
-            )
-            db.session.add(new_order)
+            user_id = result["data"].get("metadata", {}).get("user_id")
+            if not user_id:
+                return jsonify({"error": "Missing user_id in metadata"}), 400
+
+            cart_items = Cart.query.filter_by(user_id=user_id).all()
+            if not cart_items:
+                return jsonify({"error": "No cart items found for user"}), 400
+
+            for item in cart_items:
+                new_order = Orders(
+                    user_id=user_id,
+                    book_id=item.book_id,
+                    quantity=item.quantity,
+                    purchase_amount=item.total,
+                )
+                db.session.add(new_order)
+
+            Cart.query.filter_by(user_id=user_id).delete()
             db.session.commit()
-            return jsonify({"message": "Payment successful", "status": "success"})
-        
+            return jsonify({"message": "Payment successful, orders created", "status": "success"})
         except Exception as e:
             db.session.rollback()
-            print(f"Order Creation Error: {str(e)}")
             return jsonify({"error": "Order creation failed", "details": str(e)}), 500
-    
+
     return jsonify({"error": "Payment verification failed", "details": result}), 400
+
 
 @Cart_bp.route("/update-quantity", methods=["POST"])
 def update_quantity():

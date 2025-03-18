@@ -12,6 +12,7 @@ const Wishlist = () => {
 
   const [books, setBooks] = useState([]);
   const [refresh, setRefresh] = useState(0);
+
   useEffect(() => {
     if (!user_id) {
       return;
@@ -30,26 +31,37 @@ const Wishlist = () => {
 
     getList();
   }, [user_id, refresh]);
+
   return (
-    <div>
-      <button
-        onClick={() => {
-          navigate(`/homepage/${user_id}`);
-        }}
-      >
-        Back
-      </button>
-      <div className="flex gap-10">
-        {books.map((book) => {
-          return (
-            <BookCard
-              key={book.id}
-              book={book}
-              setRefresh={setRefresh}
-              selectedCategory=""
-            />
-          );
-        })}
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <div className="max-w-6xl mx-auto">
+        <button
+          onClick={() => navigate(`/homepage/${user_id}`)}
+          className="mb-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-all rounded-md shadow-md text-lg font-semibold"
+        >
+          ⬅ Back to Home
+        </button>
+
+        <h2 className="text-3xl font-bold mb-4 text-center">
+          Your Wishlist 📚
+        </h2>
+
+        {books.length === 0 ? (
+          <p className="text-center text-gray-400 text-lg">
+            Your wishlist is empty.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {books.map((book) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                setRefresh={setRefresh}
+                selectedCategory=""
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

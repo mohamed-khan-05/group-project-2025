@@ -8,6 +8,7 @@ import LoginSignup from "./pages/LoginSignup";
 import AdminPage from "./pages/AdminPage";
 import ManageBooks from "./pages/ManageBooks";
 import AdminBookDetails from "./pages/AdminBookDetails";
+import AllOrders from "./pages/AllOrders";
 // User
 import Homepage from "./pages/Homepage";
 import Wishlist from "./pages/Wishlist";
@@ -41,6 +42,7 @@ const App = () => {
         {/* Admin */}
         <Route path="/adminpage" element={<AdminPage />} />
         <Route path="/managebooks" element={<ManageBooks />} />
+        <Route path="/allorders" element={<AllOrders />} />
         <Route
           path="/adminbookdetails/:bookid"
           element={<AdminBookDetails />}

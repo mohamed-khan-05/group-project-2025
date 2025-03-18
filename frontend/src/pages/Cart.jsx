@@ -107,6 +107,7 @@ const Cart = () => {
           user_id: user_id,
           amount: amount,
           email: userEmail,
+          metadata: { user_id },
         }
       );
       if (response.data.authorization_url) {
@@ -153,7 +154,7 @@ const Cart = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(`/homepage/${user_id}`)}
         className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
@@ -187,11 +188,7 @@ const Cart = () => {
                   <button
                     className="bg-gray-300 px-3 py-1 rounded-md"
                     onClick={() =>
-                      updateQuantity(
-                        item.book_id,
-                        item.quantity + 1,
-                        item.price
-                      )
+                      updateQuantity(item.book_id, item.quantity + 1)
                     }
                   >
                     +

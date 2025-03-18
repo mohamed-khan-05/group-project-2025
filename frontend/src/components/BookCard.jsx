@@ -87,7 +87,7 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
   }
 
   return (
-    <div className="w-[45vw] sm:w-[200px] border p-2 sm:p-2 rounded shadow-md">
+    <div className="w-[45vw] sm:w-[200px] border p-2 sm:p-2 rounded shadow-md bg-white">
       <div>
         <button
           onClick={() => (inlist ? removefromlist() : addtolist())}

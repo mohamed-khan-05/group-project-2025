@@ -24,61 +24,49 @@ const Menu = () => {
   return (
     <>
       {ready ? (
-        <div className="w-[50vw] sm:w-[15vw] bg-blue-300 sm:h-[98vh] flex flex-col justify-center h-[100vh]">
+        <div className="w-[50vw] sm:w-[15vw] bg-gradient-to-b from-blue-800 to-blue-600 text-white sm:h-[98vh] flex flex-col justify-center h-[100vh] shadow-lg">
           <div
-            onClick={() => {
-              navigate(`/homepage/${user_id}`);
-            }}
-            className="cursor-pointer py-5 border-1 border-blue-400"
+            onClick={() => navigate(`/homepage/${user_id}`)}
+            className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
           >
-            <h1>Books</h1>
+            Books
           </div>
           <div
-            className=" py-5 border-1 border-blue-400"
-            onClick={() => {
-              navigate(`/orders/${user_id}`);
-            }}
+            onClick={() => navigate(`/orders/${user_id}`)}
+            className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
           >
-            <h1>Orders</h1>
-          </div>
-
-          <div
-            onClick={() => {
-              navigate(`/wishlist/${user_id}`);
-            }}
-            className="cursor-pointer py-5 border-1 border-blue-400"
-          >
-            <h1>Wishlist</h1>
+            Orders
           </div>
           <div
-            className=" py-5 border-1 border-blue-400"
-            onClick={() => {
-              navigate(`/cart/${user_id}`);
-            }}
+            onClick={() => navigate(`/wishlist/${user_id}`)}
+            className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
           >
-            <h1>Cart</h1>
+            Wishlist
           </div>
-
           <div
-            onClick={() => {
-              navigate(`/profile/${user_id}`);
-            }}
-            className="cursor-pointer py-5 border-1 border-blue-400"
+            onClick={() => navigate(`/cart/${user_id}`)}
+            className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
           >
-            <h1>Profile</h1>
+            Cart
+          </div>
+          <div
+            onClick={() => navigate(`/profile/${user_id}`)}
+            className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
+          >
+            Profile
           </div>
 
           <button
-            className="border-1 bg-white py-1 px-3"
-            onClick={() => {
-              logout();
-            }}
+            className="bg-red-500 hover:bg-red-600 transition-all py-2 px-4 rounded-md mx-auto mt-6 text-lg font-semibold"
+            onClick={logout}
           >
             Logout
           </button>
         </div>
       ) : (
-        <div>loading...</div>
+        <div className="text-center text-lg font-semibold text-gray-600">
+          Loading...
+        </div>
       )}
     </>
   );

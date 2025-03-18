@@ -124,28 +124,54 @@ const AddBook = ({ refreshBooks, closeModal }) => {
           ))}
         </select>
         <input
-          type="number"
+          type="text"
+          inputMode="numeric"
           placeholder="Quantity"
           value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d*$/.test(val)) {
+              setQuantity(val);
+            }
+          }}
           required
           className="border p-2 rounded"
         />
+
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           placeholder="Price"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d*\.?\d*$/.test(val)) {
+              setPrice(val);
+            }
+          }}
           required
           className="border p-2 rounded"
         />
+
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           placeholder="Discount"
           value={discount}
-          onChange={(e) => setDiscount(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d*\.?\d*$/.test(val)) {
+              const numericValue = parseFloat(val);
+              if (!isNaN(numericValue) && numericValue <= 100) {
+                setDiscount(val);
+              } else if (val === "") {
+                setDiscount("");
+              }
+            }
+          }}
           className="border p-2 rounded"
         />
+
         <input
           type="file"
           onChange={handleImageChange}

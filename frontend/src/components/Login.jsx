@@ -42,7 +42,7 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
             if (user_id !== 1) {
               navigate(`/homepage/${user_id}`);
             } else {
-              navigate("/adminpage");
+              navigate("/managebooks");
             }
           }, 700);
         }

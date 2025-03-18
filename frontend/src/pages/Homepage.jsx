@@ -80,62 +80,159 @@ const Homepage = () => {
       return 0;
     });
 
+  const logout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.removeItem("user_id");
+      navigate("/", { replace: true });
+    }
+  };
+
   return (
     <>
       <ToastContainer autoClose={1500} closeOnClick />
-      {/* PC */}
       <div>
-        <header className="flex w-[100vw] bg-blue-300 py-3">
-          <div className="flex w-full justify-between">
-            {showmenu ? (
-              <div className="flex absolute">
-                <Menu />
+        {/* Mobile header */}
+        <div className="sm:hidden">
+          <header className="fixed w-full bg-gradient-to-r from-blue-500 to-blue-700 shadow-md py-3 pr-4 text-white flex items-center justify-between">
+            {/* Menu Toggle */}
+            <div>
+              {showmenu ? (
+                <div className="flex absolute top-0">
+                  <Menu />
+                  <div
+                    className="text-3xl cursor-pointer ml-2 text-black hover:text-gray-500 transition-all"
+                    onClick={() => setShowmenu(!showmenu)}
+                  >
+                    <RiCloseLargeFill />
+                  </div>
+                </div>
+              ) : (
                 <div
-                  className="text-3xl cursor-pointer"
+                  className="text-3xl cursor-pointer hover:text-gray-300 transition-all"
                   onClick={() => setShowmenu(!showmenu)}
                 >
-                  <RiCloseLargeFill />
+                  <RxHamburgerMenu />
                 </div>
-              </div>
-            ) : (
-              <div
-                className="text-3xl absolute cursor-pointer"
-                onClick={() => setShowmenu(!showmenu)}
-              >
-                <RxHamburgerMenu />
-              </div>
-            )}
-            <div className="ml-20 flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="Search For Book"
-                className="py-1 px-3 border rounded-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+              )}
             </div>
-            <div>
-              <h1>Book Store</h1>
+
+            {/* Branding */}
+            <div className="text-xl font-semibold tracking-wide flex-1 text-center">
+              📚 Book Store
             </div>
-            <div className="p-2 flex items-center gap-2 text-2xl">
+
+            {/* User Controls */}
+            <div className="flex items-center gap-3">
               <button
-                className="mr-5 cursor-pointer text-red-500"
+                onClick={() => logout()}
+                className="bg-red-500 px-3 py-1 rounded-md text-white hover:bg-red-600 transition-all text-sm"
+              >
+                Logout
+              </button>
+
+              <button
+                className="cursor-pointer text-red-400 hover:text-red-600 transition-all"
                 onClick={() => navigate(`/wishlist/${user_id}`)}
               >
-                <FaHeart />
+                <FaHeart size={22} />
               </button>
+
               <button
-                className="cursor-pointer"
+                className="relative cursor-pointer hover:text-gray-300 transition-all"
                 onClick={() => navigate(`/cart/${user_id}`)}
               >
-                <FaCartShopping />
+                <FaCartShopping size={22} />
+                {amount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                    {amount}
+                  </span>
+                )}
               </button>
-              <div className="text-red-700">{amount}</div>
             </div>
-          </div>
-        </header>
+          </header>
+        </div>
+        {/* PC Header */}
+        <div className="hidden sm:block">
+          <header className="sticky top-0 flex w-full bg-gradient-to-r from-blue-500 to-blue-700 shadow-md py-4 pr-4 text-white">
+            <div className="flex w-full justify-between items-center">
+              {showmenu ? (
+                <div className="flex absolute top-0">
+                  <Menu />
+                  <div
+                    className="text-3xl cursor-pointer ml-4 text-black hover:text-gray-500 transition-all"
+                    onClick={() => setShowmenu(!showmenu)}
+                  >
+                    <RiCloseLargeFill />
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="text-3xl absolute top-4 cursor-pointer text-white hover:text-gray-300 transition-all"
+                  onClick={() => setShowmenu(!showmenu)}
+                >
+                  <RxHamburgerMenu />
+                </div>
+              )}
+
+              {/* Search Bar */}
+              <div className="ml-20 flex items-center gap-2 bg-white rounded-lg">
+                <input
+                  type="text"
+                  placeholder="Search for a book..."
+                  className="py-2 px-4 w-72 text-gray-800 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              {/* Branding */}
+              <div className="text-2xl font-semibold tracking-wide">
+                📚 Book Store
+              </div>
+
+              {/* User Controls */}
+              <div className="flex items-center gap-4 text-lg">
+                <button
+                  onClick={() => logout()}
+                  className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600 transition-all"
+                >
+                  Logout
+                </button>
+
+                <button
+                  className="cursor-pointer text-red-400 hover:text-red-600 transition-all"
+                  onClick={() => navigate(`/wishlist/${user_id}`)}
+                >
+                  <FaHeart size={28} />
+                </button>
+
+                <button
+                  className="relative cursor-pointer hover:text-gray-300 transition-all"
+                  onClick={() => navigate(`/cart/${user_id}`)}
+                >
+                  <FaCartShopping size={28} />
+                  {amount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                      {amount}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </header>
+        </div>
 
         <div className="sm:flex block">
+          <div className="flex w-[100vw] bg-white rounded-lg py-1 sm:hidden">
+            <input
+              type="text"
+              placeholder="Search for a book..."
+              className="py-2 px-4 mx-2 w-full text-gray-800 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
           {/* Filter Component */}
           <div>
             <Filter

@@ -4,12 +4,16 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+// Media
+import { ArrowLeft } from "lucide-react";
+
 const Profile = () => {
   const user_id = useContext(Context);
   const url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const [user, setUser] = useState({ name: "" });
+  const [num, setNum] = useState();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,8 +22,12 @@ const Profile = () => {
     axios
       .post(`${url}/getprofile`, { user_id })
       .then((res) => {
-        if (res.data.status === "200") {
+        if (res.data.status === "200" && res.data.user) {
           setUser({ name: res.data.user.name });
+
+          // Extract part before '@' in student_num
+          const studentNumber = res.data.user.student_num?.split("@")[0] || "";
+          setNum(studentNumber);
         } else {
           toast.error("Error fetching profile.");
         }
@@ -60,13 +68,13 @@ const Profile = () => {
   return (
     <>
       <button
-        className="border-1 p-3"
-        onClick={() => {
-          navigate(-1);
-        }}
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
       >
-        Back
+        <ArrowLeft className="w-5 h-5 mr-1" />
+        <span className="text-sm font-medium">Back</span>
       </button>
+
       <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
         <ToastContainer />
 
@@ -81,6 +89,20 @@ const Profile = () => {
               value={user.name}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {/* Student number */}
+          <div>
+            <label className="block text-gray-700 font-medium">
+              Student Number
+            </label>
+            <input
+              type="text"
+              value={num}
+              disabled
+              className="w-full border bg-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -134,7 +156,6 @@ const Profile = () => {
           </button>
         </form>
       </div>
-      x
     </>
   );
 };
