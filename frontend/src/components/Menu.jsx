@@ -17,7 +17,7 @@ const Menu = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
       localStorage.removeItem("user_id");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
 
@@ -59,10 +59,12 @@ const Menu = () => {
             <h1>Cart</h1>
           </div>
 
-          <div onClick={() => {
+          <div
+            onClick={() => {
               navigate(`/profile/${user_id}`);
             }}
-            className="cursor-pointer py-5 border-1 border-blue-400">
+            className="cursor-pointer py-5 border-1 border-blue-400"
+          >
             <h1>Profile</h1>
           </div>
 

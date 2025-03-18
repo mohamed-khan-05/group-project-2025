@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Context } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Media
 import { ArrowLeft } from "lucide-react";
 
 const Cart = () => {
   const url = import.meta.env.VITE_BASE_URL;
+  const { userid } = useParams();
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [userEmail, setUserEmail] = useState("");
@@ -16,6 +17,12 @@ const Cart = () => {
 
   useEffect(() => {
     if (!user_id) {
+      return;
+    }
+
+    if (userid != user_id && user_id != null) {
+      localStorage.removeItem("user_id");
+      navigate("/");
       return;
     }
     const fetchCartItems = async () => {
@@ -51,7 +58,7 @@ const Cart = () => {
     fetchUserEmail();
   }, [user_id]);
 
-  const updateQuantity = async (bookId, newQuantity, price) => {
+  const updateQuantity = async (bookId, newQuantity) => {
     if (newQuantity < 1) {
       if (!window.confirm("Are you sure you want to remove this item?")) {
         return;
@@ -60,19 +67,19 @@ const Cart = () => {
 
     try {
       const response = await axios.post(`${url}/cart/update-quantity`, {
-        user_id,
+        user_id: user_id,
         book_id: bookId,
         quantity: newQuantity,
       });
 
       if (response.data.message === "Item removed from cart") {
         setCartItems((prevItems) =>
-          prevItems.filter((item) => item.id !== bookId)
+          prevItems.filter((item) => item.book_id !== bookId)
         );
       } else {
         setCartItems((prevItems) =>
           prevItems.map((item) =>
-            item.id === bookId
+            item.book_id === bookId
               ? { ...item, quantity: newQuantity, total: response.data.total }
               : item
           )
@@ -112,6 +119,36 @@ const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    const verifyPaymentAndCreateOrder = async (reference) => {
+      try {
+        const response = await axios.post(
+          `${url}/cart/verify-paystack-payment`,
+          {
+            reference,
+          }
+        );
+
+        if (response.data.status === "success") {
+          alert("Payment successful! Your order has been placed.");
+        } else {
+          alert("Payment verification failed. Please contact support.");
+        }
+      } catch (error) {
+        console.error("Error verifying payment", error);
+        alert("An error occurred while verifying payment.");
+      }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const reference = urlParams.get("reference");
+
+    if (reference) {
+      verifyPaymentAndCreateOrder(reference);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [navigate, url]);
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <button
@@ -139,9 +176,9 @@ const Cart = () => {
                 <div className="flex items-center space-x-4">
                   <button
                     className="bg-gray-300 px-3 py-1 rounded-md"
-                    onClick={() =>
-                      updateQuantity(item.id, item.quantity - 1, item.price)
-                    }
+                    onClick={() => {
+                      updateQuantity(item.book_id, item.quantity - 1);
+                    }}
                   >
                     -
                   </button>
@@ -149,7 +186,11 @@ const Cart = () => {
                   <button
                     className="bg-gray-300 px-3 py-1 rounded-md"
                     onClick={() =>
-                      updateQuantity(item.id, item.quantity + 1, item.price)
+                      updateQuantity(
+                        item.book_id,
+                        item.quantity + 1,
+                        item.price
+                      )
                     }
                   >
                     +

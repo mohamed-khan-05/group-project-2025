@@ -118,7 +118,7 @@ def create_paystack_transaction():
         return jsonify({"error": "Missing amount or email"}), 400
 
     try:
-       amount = int(round(float(amount) * 100))  # Convert ZAR to Kobo
+       amount = int(round(float(amount) * 100))
     except ValueError:
         return jsonify({"error": "Invalid amount format"}), 400
 
@@ -148,6 +148,15 @@ def verify_paystack_payment():
     result = response.json()
 
     if response.status_code == 200 and result.get("data", {}).get("status") == "success":
+        new_Order = Orders(
+            user_id=1,
+            book_id=1,
+            quantity=1,
+            purchase_amount=100,
+            discount_amount=10
+        )
+        db.session.add(new_Order)
+        db.session.commit()
         return jsonify({"message": "Payment successful", "status": "success"})
     
     return jsonify({"error": "Payment verification failed", "details": result}), 400
@@ -159,19 +168,43 @@ def update_quantity():
     book_id = data.get("book_id")
     quantity = data.get("quantity")
 
+    if not user_id:
+        return jsonify({"message": "User not found"}), 408
+
     cart = Cart.query.filter_by(user_id=user_id, book_id=book_id).first()
+    book = Book.query.filter_by(id=book_id).first()
+
+    if not book:
+        return jsonify({"message": "Book not found"}), 409
 
     if cart is None:
         return jsonify({"message": "Cart not found"}), 404
 
-    if quantity < 1:
+    if quantity > book.quantity:
+        return jsonify({"message": "Out of stock"}), 400
+
+    if (quantity < 1):
         db.session.delete(cart)
         db.session.commit()
         return jsonify({"message": "Item removed from cart"})
 
     cart.quantity = quantity
-    cart.total = cart.quantity * cart.book.price
+    old_price = cart.quantity * cart.book.price
+    new_price = old_price - (old_price*cart.book.discount/100)
+    cart.total = round(new_price, 2)
 
     db.session.commit()
-    return jsonify({"message": "success", "total": cart.total})
+    return jsonify({"message": "Success", "total": cart.total})
 
+@Cart_bp.route("/getamount",methods=["POST"])
+def getamount():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    book_id = data.get("book_id")
+
+    cart = Cart.query.filter_by(user_id=user_id, book_id=book_id).first()
+
+    if not cart:
+        return jsonify({"quantity":0})
+    else:
+        return jsonify({"quantity":cart.quantity})

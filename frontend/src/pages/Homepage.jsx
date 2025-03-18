@@ -83,81 +83,8 @@ const Homepage = () => {
   return (
     <>
       <ToastContainer autoClose={1500} closeOnClick />
-
-      {/* Mobile */}
-      <div className="sm:hidden ">
-        <header className="flex w-[100vw] bg-blue-300 py-3">
-          <div className="flex w-full justify-between items-center">
-            <div></div>
-            {showmenu ? (
-              <div className="flex absolute top-0 left-0">
-                <Menu />
-                <div
-                  className="text-3xl cursor-pointer"
-                  onClick={() => setShowmenu(!showmenu)}
-                >
-                  <RiCloseLargeFill />
-                </div>
-              </div>
-            ) : (
-              <div
-                className="text-3xl absolute cursor-pointer"
-                onClick={() => setShowmenu(!showmenu)}
-              >
-                <RxHamburgerMenu />
-              </div>
-            )}
-
-            <div>
-              <h1>Book Store</h1>
-            </div>
-            <div className="p-2 flex items-center gap-2">
-              <button
-                className="mr-5 cursor-pointer text-red-500"
-                onClick={() => navigate(`/wishlist/${user_id}`)}
-              >
-                <FaHeart />
-              </button>
-              <button onClick={() => navigate(`/cart/${user_id}`)}>
-                <FaCartShopping />
-              </button>
-              <div className="text-red-700">{amount}</div>
-            </div>
-          </div>
-        </header>
-
-        {/* Search Bar */}
-        <div className="flex gap-2 p-2">
-          <input
-            type="text"
-            placeholder="Search For Book"
-            className="py-1 px-3 border rounded-sm w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button className="hover:cursor-pointer bg-blue-500 text-white px-3 py-1 rounded">
-            <GoSearch className="text-xl" />
-          </button>
-        </div>
-
-        {/* Display Books */}
-        <div className="flex gap-10 flex-wrap">
-          {loading
-            ? null
-            : filteredBooks.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  setRefresh={setRefresh}
-                  selectedCategory={selectedCategory}
-                  searchTerm={searchTerm}
-                />
-              ))}
-        </div>
-      </div>
-
       {/* PC */}
-      <div className="hidden sm:block">
+      <div>
         <header className="flex w-[100vw] bg-blue-300 py-3">
           <div className="flex w-full justify-between">
             {showmenu ? (
@@ -208,29 +135,31 @@ const Homepage = () => {
           </div>
         </header>
 
-        {/* Filter Component */}
-        <div className="w-full sm:w-1/4">
-          <Filter
-            setSelectedCategory={setSelectedCategory}
-            setSortOption={setSortOption}
-            setMinPrice={setMinPrice}
-            setMaxPrice={setMaxPrice}
-          />
-        </div>
+        <div className="sm:flex block">
+          {/* Filter Component */}
+          <div>
+            <Filter
+              setSelectedCategory={setSelectedCategory}
+              setSortOption={setSortOption}
+              setMinPrice={setMinPrice}
+              setMaxPrice={setMaxPrice}
+            />
+          </div>
 
-        {/* Display Books */}
-        <div className="flex gap-5 flex-wrap">
-          {loading
-            ? null
-            : filteredBooks.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  setRefresh={setRefresh}
-                  selectedCategory={selectedCategory}
-                  searchTerm={searchTerm}
-                />
-              ))}
+          {/* Display Books */}
+          <div className="flex gap-5 flex-wrap">
+            {loading
+              ? null
+              : filteredBooks.map((book) => (
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    setRefresh={setRefresh}
+                    selectedCategory={selectedCategory}
+                    searchTerm={searchTerm}
+                  />
+                ))}
+          </div>
         </div>
       </div>
     </>

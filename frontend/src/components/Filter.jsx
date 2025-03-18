@@ -32,7 +32,6 @@ const Filter = ({
     setMinPrice("");
     setMaxPrice("");
 
-    // Reset input fields
     document.getElementById("category").value = "";
     document.getElementById("sort").value = "";
     document.getElementById("min-price").value = "";
@@ -40,19 +39,26 @@ const Filter = ({
   };
 
   return (
-    <div className="border p-3 rounded shadow-md">
-      <h2 className="text-lg font-semibold mb-2">Filter and Sort</h2>
+    <div className="bg-white p-5 shadow-md rounded-lg border border-gray-200 w-82">
+      <h2 className="text-lg font-semibold mb-4 text-gray-800 text-center">
+        Filter & Sort
+      </h2>
 
-      {/* Category Filter (Dropdown) */}
+      {/* Category Filter */}
       <div className="mb-4">
-        <h3 className="font-medium mb-2">Filter by Category</h3>
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Category
+        </label>
         <select
           id="category"
-          className="border rounded p-2 w-full"
+          className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <option value="">All</option>
+          <option value="">All Categories</option>
           {categories.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -63,21 +69,23 @@ const Filter = ({
 
       {/* Price Range Filter */}
       <div className="mb-4">
-        <h3 className="font-medium mb-2">Filter by Price Range</h3>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Price Range
+        </label>
         <div className="flex gap-2">
           <input
             id="min-price"
             type="text"
-            placeholder="Min Price"
-            className="border rounded p-2 w-full"
+            placeholder="Min"
+            className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 text-center"
             onChange={(e) => handlePriceInput(e, setMinPrice)}
             value={minPrice}
           />
           <input
             id="max-price"
             type="text"
-            placeholder="Max Price"
-            className="border rounded p-2 w-full"
+            placeholder="Max"
+            className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 text-center"
             onChange={(e) => handlePriceInput(e, setMaxPrice)}
             value={maxPrice}
           />
@@ -86,12 +94,17 @@ const Filter = ({
 
       {/* Sorting Options */}
       <div className="mb-4">
-        <h3 className="font-medium mb-2">Sort by</h3>
+        <label
+          htmlFor="sort"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Sort by
+        </label>
         <select
           id="sort"
-          onChange={(e) => setSortOption(e.target.value)}
-          className="border rounded p-2 w-full"
+          className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
           value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
         >
           <option value="">None</option>
           <option value="name-asc">Name (A-Z)</option>
@@ -104,7 +117,7 @@ const Filter = ({
       {/* Reset Button */}
       <button
         onClick={handleReset}
-        className="bg-red-500 text-white px-4 py-2 rounded w-full mt-3 hover:bg-red-600"
+        className="w-full bg-red-500 text-white font-medium py-2 rounded-md transition hover:bg-red-600"
       >
         Reset Filters
       </button>
