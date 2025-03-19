@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Media
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const AllOrders = () => {
   const navigate = useNavigate();
@@ -15,8 +15,8 @@ const AllOrders = () => {
   const url = import.meta.env.VITE_BASE_URL;
 
   const fetchOrders = async () => {
-    setLoading(true); // Start loading
-    setError(""); // Clear previous error
+    setLoading(true);
+    setError("");
     try {
       const response = await axios.get(`${url}/orders/getallorders`);
       setOrders(response.data);
@@ -24,7 +24,7 @@ const AllOrders = () => {
       console.error("Error fetching orders:", error);
       setError("Failed to load orders. Please try again later.");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -60,8 +60,8 @@ const AllOrders = () => {
   return (
     <>
       <button
-        onClick={() => navigate(-1)}
-        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
+        onClick={() => navigate("/managebooks")}
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
         <span className="text-sm font-medium">Back</span>

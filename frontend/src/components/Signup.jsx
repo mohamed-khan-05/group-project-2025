@@ -34,11 +34,14 @@ const Signup = ({ isLogin, setIsLogin }) => {
       })
       .then((res) => {
         if (res.data.status == "200") {
-          toast.success("User created Successfully");
+          toast.success("User created Successfully. Please Login");
           setName("");
           setStudentNum("");
           setPassword("");
           setEmail("@dut4life.ac.za");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         } else {
           toast.error("User already exists");
         }

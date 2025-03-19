@@ -45,7 +45,7 @@ const AdminBookCard = ({ book }) => {
             }}
             src={book.image}
             alt={book.title}
-            className="w-full sm:w-[200px] sm:h-[250px] object-contain rounded mb-1"
+            className="w-full sm:w-[200px] sm:h-[250px] object-contain rounded mb-1 cursor-pointer"
           />
         </div>
         <h3 className="text-lg font-semibold break-words">{book.title}</h3>

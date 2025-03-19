@@ -4,16 +4,27 @@ import { Context } from "../App";
 
 // Media
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Orders = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const user_id = useContext(Context);
+  const { userid } = useParams();
   const url = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
+    if (!user_id) {
+      return;
+    }
+
+    if (userid != user_id && user_id != null) {
+      localStorage.removeItem("user_id");
+      navigate("/");
+      return;
+    }
+
     const fetchOrders = async () => {
       try {
         const res = await axios.post(`${url}/orders/getuserorders`, {
@@ -61,6 +72,9 @@ const Orders = () => {
           >
             <div className="flex items-center space-x-4">
               <img
+                onClick={() => {
+                  navigate(`/bookdetails/${order.book_id}`);
+                }}
                 src={order.book_image}
                 alt={order.book_title}
                 className="w-24 h-28 object-cover rounded-md shadow"

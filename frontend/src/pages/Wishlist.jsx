@@ -3,11 +3,12 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import { Context } from "../App";
 import BookCard from "../components/BookCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Wishlist = () => {
   const url = import.meta.env.VITE_BASE_URL;
   const user_id = useContext(Context);
+  const { userid } = useParams();
   const navigate = useNavigate();
 
   const [books, setBooks] = useState([]);
@@ -15,6 +16,12 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (!user_id) {
+      return;
+    }
+
+    if (userid != user_id && user_id != null) {
+      localStorage.removeItem("user_id");
+      navigate("/");
       return;
     }
 

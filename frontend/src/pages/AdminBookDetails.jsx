@@ -185,20 +185,39 @@ const AdminBookDetails = () => {
 
             <label>Price:</label>
             <input
-              type="number"
+              type="text"
               name="price"
+              inputMode="decimal"
+              maxLength={10}
               value={formData.price}
-              onChange={handleChange}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (/^\d*\.?\d*$/.test(val)) {
+                  setFormData((prev) => ({ ...prev, price: val }));
+                }
+              }}
               className="border p-2"
             />
             {errors.price && <p className="text-red-500">{errors.price}</p>}
 
             <label>Discount (%):</label>
             <input
-              type="number"
+              type="text"
               name="discount"
+              inputMode="decimal"
+              maxLength={10}
               value={formData.discount}
-              onChange={handleChange}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (/^\d*\.?\d*$/.test(val)) {
+                  const numericValue = parseFloat(val);
+                  if (!isNaN(numericValue) && numericValue <= 100) {
+                    setFormData((prev) => ({ ...prev, discount: val }));
+                  } else if (val === "") {
+                    setFormData((prev) => ({ ...prev, discount: "" }));
+                  }
+                }
+              }}
               className="border p-2"
             />
             {errors.discount && (
@@ -207,10 +226,17 @@ const AdminBookDetails = () => {
 
             <label>Quantity:</label>
             <input
-              type="number"
+              type="text"
               name="quantity"
+              inputMode="numeric"
+              maxLength={10}
               value={formData.quantity}
-              onChange={handleChange}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (/^\d*$/.test(val)) {
+                  setFormData((prev) => ({ ...prev, quantity: val }));
+                }
+              }}
               className="border p-2"
             />
             {errors.quantity && (

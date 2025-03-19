@@ -2,7 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../App";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify"; // ✅ Import toast
+import { toast, ToastContainer } from "react-toastify";
+
+//  media
+import { ArrowLeft } from "lucide-react";
 
 const BookDetails = () => {
   const url = import.meta.env.VITE_BASE_URL;
@@ -163,10 +166,12 @@ const BookDetails = () => {
             ? navigate(-1)
             : navigate(`/homepage/${user_id}`)
         }
-        className="text-blue-500 hover:underline mb-4"
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
       >
-        &larr; Back
+        <ArrowLeft className="w-5 h-5 mr-1" />
+        <span className="text-sm font-medium">Back</span>
       </button>
+
       {!book ? (
         <div className="text-center text-lg font-semibold">Loading...</div>
       ) : (
@@ -187,40 +192,47 @@ const BookDetails = () => {
               R {actualPrice.toFixed(2)}
             </p>
 
-            <div className="flex flex-col gap-4 mt-4">
-              {incart ? (
-                <div className="flex flex-col items-center border rounded-lg p-4 shadow-md">
-                  <div className="flex items-center gap-4">
+            {book.quantity <= 0 ? (
+              <div>
+                <h1 className="text-red-500 text-lg sm:text-2xl">Sold-out</h1>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 mt-4">
+                {incart ? (
+                  <div className="flex flex-col items-center border rounded-lg p-4 shadow-md">
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => updateQuantity(bookid, quantity - 1)}
+                        className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
+                      >
+                        -
+                      </button>
+                      <span className="text-lg font-semibold">{quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(bookid, quantity + 1)}
+                        className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
+                      >
+                        +
+                      </button>
+                    </div>
                     <button
-                      onClick={() => updateQuantity(bookid, quantity - 1)}
-                      className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
+                      onClick={removefromcart}
+                      className="mt-3 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
                     >
-                      -
-                    </button>
-                    <span className="text-lg font-semibold">{quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(bookid, quantity + 1)}
-                      className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
-                    >
-                      +
+                      Remove from Cart
                     </button>
                   </div>
+                ) : (
                   <button
-                    onClick={removefromcart}
-                    className="mt-3 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
+                    onClick={addtocart}
+                    className="px-6 py-3 bg-blue-500 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-600 transition w-full"
                   >
-                    Remove from Cart
+                    Add to Cart
                   </button>
-                </div>
-              ) : (
-                <button
-                  onClick={addtocart}
-                  className="px-6 py-3 bg-blue-500 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-600 transition w-full"
-                >
-                  Add to Cart
-                </button>
-              )}
-            </div>
+                )}
+              </div>
+            )}
+
             <button
               className="px-6 py-3 bg-green-500 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-green-600 transition w-full"
               onClick={() => {

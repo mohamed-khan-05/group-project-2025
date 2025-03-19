@@ -154,12 +154,7 @@ def deletebook():
     if not book:
         return jsonify({"message":"Book not found"})
     else:
-        if book.image != "BookPlaceholder.png":
-            old_image_path = os.path.join(app.config["UPLOAD_FOLDER"], book.image)
-            if os.path.exists(old_image_path):
-                os.remove(old_image_path)
-                
-        db.session.delete(book)
+        book.quantity=0
         db.session.commit()
         return jsonify({"message":"book deleted"})
     

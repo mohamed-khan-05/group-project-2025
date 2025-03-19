@@ -106,7 +106,7 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
         <img
           src={book.image}
           alt={book.title}
-          className="w-full sm:w-[150px] sm:h-[150px] object-contain rounded mb-1"
+          className="w-full sm:w-[150px] sm:h-[150px] object-contain rounded mb-1 cursor-pointer"
         />
       </div>
 

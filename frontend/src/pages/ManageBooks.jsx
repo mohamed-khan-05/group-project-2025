@@ -11,6 +11,8 @@ const ManageBooks = () => {
   const navigate = useNavigate();
   const [showAdd, setShowAdd] = useState(false);
   const [books, setBooks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [availabilityFilter, setAvailabilityFilter] = useState("available");
   const url = import.meta.env.VITE_BASE_URL;
 
   const fetchBooks = async () => {
@@ -25,6 +27,17 @@ const ManageBooks = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch = book.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesAvailability =
+      availabilityFilter === "all" ||
+      (availabilityFilter === "available" && book.quantity > 0) ||
+      (availabilityFilter === "sold-out" && book.quantity === 0);
+    return matchesSearch && matchesAvailability;
+  });
 
   return (
     <>
@@ -54,15 +67,39 @@ const ManageBooks = () => {
           <div>
             <AdminMenu />
           </div>
-          <button
-            className="bg-blue-600 px-2 py-1 text-white rounded-sm mb-2 ml-2"
-            onClick={() => setShowAdd(true)}
-          >
-            Add Book
-          </button>
+          <div className="sm:flex">
+            <div>
+              <button
+                className="bg-blue-600 px-2 py-1 text-white rounded-sm mb-2 ml-2"
+                onClick={() => setShowAdd(true)}
+              >
+                Add Book
+              </button>
+            </div>
+
+            {/* Search and Filter */}
+            <div className="flex gap-2 mb-4 ml-2">
+              <input
+                type="text"
+                placeholder="Search book by name"
+                className="border px-2 py-1 rounded"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <select
+                className="border px-2 py-1 rounded"
+                value={availabilityFilter}
+                onChange={(e) => setAvailabilityFilter(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="available">Available</option>
+                <option value="sold-out">Sold-out</option>
+              </select>
+            </div>
+          </div>
 
           <div className="flex flex-wrap gap-2 mb-10">
-            {books.map((book) => (
+            {filteredBooks.map((book) => (
               <AdminBookCard key={book.id} book={book} />
             ))}
           </div>

@@ -49,7 +49,7 @@ def addtoorder():
 
 @Orders_bp.route('/getallorders', methods=['GET'])
 def getallorders():
-    orders=Orders.query.order_by(Orders.id.desc()).all()
+    orders=Orders.query.order_by(Orders.id.asc()).all()
     orders_list =[]
     for order in orders:
         user = User.query.filter_by(id=order.user_id).first()

@@ -11,6 +11,7 @@ const Cart = () => {
   const { userid } = useParams();
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [prevAmount, setPrevAmount] = useState(0);
   const [userEmail, setUserEmail] = useState("");
   const user_id = useContext(Context);
   const navigate = useNavigate();
@@ -42,6 +43,13 @@ const Cart = () => {
       0
     );
     setTotalAmount(Number(total.toFixed(2)));
+
+    let temp = 0;
+    cartItems.forEach((item) => {
+      let originalPrice = item.total / (1 - item.discount / 100);
+      temp += originalPrice;
+    });
+    setPrevAmount(temp);
   }, [cartItems]);
 
   useEffect(() => {
@@ -154,8 +162,10 @@ const Cart = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 sm:py-6 py-10 bg-white shadow-lg rounded-lg">
       <button
-        onClick={() => navigate(`/homepage/${user_id}`)}
-        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
+        onClick={() => {
+          navigate(`/homepage/${user_id}`);
+        }}
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
         <span className="text-sm font-medium">Back</span>
@@ -167,6 +177,9 @@ const Cart = () => {
           {cartItems.map((item) => (
             <div key={item.id} className="flex items-center border-b pb-4">
               <img
+                onClick={() => {
+                  navigate(`/bookdetails/${item.book_id}`);
+                }}
                 src={item.book_image}
                 alt={item.name}
                 className="w-24 h-28 object-cover rounded-md shadow-md"
@@ -201,10 +214,19 @@ const Cart = () => {
             </div>
           ))}
 
-          <div className="text-right mt-6">
-            <h3 className="text-xl font-bold text-gray-900">
-              Total: ZAR {totalAmount}
-            </h3>
+          <div className="flex justify-between">
+            <div className="mt-6">
+              <h3 className="sm:text-xl text-lg flex gap-2 font-bold text-gray-900">
+                Savings:
+                <h1 className="text-green-500">R {prevAmount - totalAmount}</h1>
+              </h3>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="sm:text-xl text-lg font-bold text-gray-900">
+                Total: R {totalAmount}
+              </h3>
+            </div>
           </div>
 
           <button
