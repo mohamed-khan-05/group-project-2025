@@ -116,7 +116,7 @@ const AdminBookDetails = () => {
     <>
       <ToastContainer hideProgressBar />
       <div className="p-4">
-        <button onClick={() => navigate(-1)}>Back</button>
+        <button onClick={() => navigate("/managebooks")}>Back</button>
         <h1 className="text-2xl font-bold mb-4">Edit Book Details</h1>
 
         {!book ? (
