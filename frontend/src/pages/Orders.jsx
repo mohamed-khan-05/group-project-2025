@@ -58,7 +58,7 @@ const Orders = () => {
     <div className="max-w-5xl mx-auto p-6 sm:py-6 py-10 bg-white shadow-lg rounded-lg">
       <button
         onClick={() => navigate(`/homepage/${user_id}`)}
-        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
         <span className="text-sm font-medium">Back</span>

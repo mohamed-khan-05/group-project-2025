@@ -53,6 +53,9 @@ const Cart = () => {
   }, [cartItems]);
 
   useEffect(() => {
+    if (!user_id) {
+      return;
+    }
     const fetchUserEmail = async () => {
       try {
         const response = await axios.get(`${url}/cart/get-user-email`, {
@@ -216,10 +219,10 @@ const Cart = () => {
 
           <div className="flex justify-between">
             <div className="mt-6">
-              <h3 className="sm:text-xl text-lg flex gap-2 font-bold text-gray-900">
+              <div className="sm:text-xl text-lg flex gap-2 font-bold text-gray-900">
                 Savings:
                 <h1 className="text-green-500">R {prevAmount - totalAmount}</h1>
-              </h3>
+              </div>
             </div>
 
             <div className="mt-6">
@@ -231,7 +234,7 @@ const Cart = () => {
 
           <button
             onClick={handleCheckout}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all cursor-pointer"
           >
             Proceed to Checkout
           </button>

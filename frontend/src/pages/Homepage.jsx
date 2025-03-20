@@ -159,10 +159,10 @@ const Homepage = () => {
         </div>
         {/* PC Header */}
         <div className="hidden sm:block mb-2">
-          <header className="sticky top-0 flex w-full bg-gradient-to-r from-blue-500 to-blue-700 shadow-md py-4 pr-4 text-white">
+          <header className="top-0 flex w-full bg-gradient-to-r from-blue-500 to-blue-700 shadow-md py-4 pr-4 text-white max-h-[10vh] overflow-y-hidden">
             <div className="flex w-full justify-between items-center">
               {showmenu ? (
-                <div className="flex absolute top-0">
+                <div className="flex absolute z-50 top-0">
                   <Menu />
                   <div
                     className="text-3xl cursor-pointer ml-4 text-black hover:text-gray-500 transition-all"
@@ -184,6 +184,7 @@ const Homepage = () => {
               <div className="ml-20 flex items-center gap-2 bg-white rounded-lg">
                 <input
                   type="text"
+                  maxLength={50}
                   placeholder="Search for a book..."
                   className="py-2 px-4 w-72 text-gray-800 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
                   value={searchTerm}
@@ -200,7 +201,7 @@ const Homepage = () => {
               <div className="flex items-center gap-4 text-lg">
                 <button
                   onClick={() => logout()}
-                  className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600 transition-all"
+                  className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600 transition-all cursor-pointer"
                 >
                   Logout
                 </button>
@@ -249,7 +250,7 @@ const Homepage = () => {
           </div>
 
           {/* Display Books */}
-          <div className="flex flex-col gap-8 sm:h-[91vh] h-[80vh] overflow-y-scroll">
+          <div className="flex flex-col gap-8 sm:h-[88vh] h-[80vh] overflow-y-scroll">
             {/* Popular Books Section */}
             <div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">

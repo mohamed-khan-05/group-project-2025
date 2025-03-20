@@ -21,7 +21,7 @@ const Filter = ({
 
   const handlePriceInput = (e, setPrice) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
+    if (/^\d*\.?\d*$/.test(value)) {
       setPrice(value);
     }
   };
@@ -36,6 +36,14 @@ const Filter = ({
     document.getElementById("sort").value = "";
     document.getElementById("min-price").value = "";
     document.getElementById("max-price").value = "";
+  };
+
+  const handleKeyPress = (e) => {
+    // Only allow numbers and decimal point
+    const key = e.key;
+    if (!/[\d\.]/.test(key)) {
+      e.preventDefault(); // Prevent invalid characters from being typed
+    }
   };
 
   return (
@@ -75,6 +83,8 @@ const Filter = ({
         <div className="flex gap-2">
           <input
             id="min-price"
+            onKeyPress={handleKeyPress}
+            maxLength={10}
             type="text"
             placeholder="Min"
             className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 text-center"
@@ -83,6 +93,8 @@ const Filter = ({
           />
           <input
             id="max-price"
+            onKeyPress={handleKeyPress}
+            maxLength={10}
             type="text"
             placeholder="Max"
             className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 text-center"

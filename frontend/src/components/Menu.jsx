@@ -24,7 +24,7 @@ const Menu = () => {
   return (
     <>
       {ready ? (
-        <div className="w-[50vw] sm:w-[15vw] bg-gradient-to-b from-blue-800 to-blue-600 text-white sm:h-[98vh] flex flex-col justify-center h-[100vh] shadow-lg">
+        <div className="w-[50vw] sm:w-[20vw] bg-gradient-to-b from-blue-800 to-blue-600 text-white sm:h-[98vh] flex flex-col justify-center h-[100vh] shadow-lg">
           <div
             onClick={() => navigate(`/homepage/${user_id}`)}
             className="cursor-pointer py-5 border-b border-blue-500 hover:bg-blue-700 transition-all text-center text-lg font-semibold"
@@ -57,7 +57,7 @@ const Menu = () => {
           </div>
 
           <button
-            className="bg-red-500 hover:bg-red-600 transition-all py-2 px-4 rounded-md mx-auto mt-6 text-lg font-semibold"
+            className="bg-red-500 hover:bg-red-600 transition-all py-2 px-4 rounded-md mx-auto mt-6 text-lg font-semibold cursor-pointer"
             onClick={logout}
           >
             Logout

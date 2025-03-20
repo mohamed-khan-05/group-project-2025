@@ -39,7 +39,7 @@ const AdminMenu = () => {
         Profile
       </h1>
       <button
-        className="bg-white py-1 sm:px-3 px-2 text-red-500"
+        className="bg-white py-1 sm:px-3 px-2 text-red-500 cursor-pointer rounded-2xl"
         onClick={() => {
           logout();
         }}

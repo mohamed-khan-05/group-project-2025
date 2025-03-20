@@ -62,6 +62,7 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
         <input
           className="border m-2 p-2 max-w-[500px] rounded-lg bg-white"
           type="email"
+          maxLength={50}
           placeholder="email"
           value={email}
           onChange={(e) => {

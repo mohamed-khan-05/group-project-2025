@@ -75,7 +75,7 @@ const Profile = () => {
             navigate("/managebooks");
           }
         }}
-        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all"
+        className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
         <span className="text-sm font-medium">Back</span>
@@ -92,6 +92,7 @@ const Profile = () => {
             <label className="block text-gray-700 font-medium">Name</label>
             <input
               type="text"
+              maxLength={50}
               value={user.name}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
               className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -119,6 +120,7 @@ const Profile = () => {
               Old Password
             </label>
             <input
+              maxLength={15}
               type="password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
@@ -133,6 +135,7 @@ const Profile = () => {
               New Password
             </label>
             <input
+              maxLength={15}
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
@@ -146,6 +149,7 @@ const Profile = () => {
               Confirm New Password
             </label>
             <input
+              maxLength={15}
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

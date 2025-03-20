@@ -60,7 +60,7 @@ def remove():
         return jsonify({"message": "success"})
     return jsonify({"message": "failed"})
 
-@Cart_bp.route("getcartamount",methods=["POST"])
+@Cart_bp.route("/getcartamount",methods=["POST"])
 def getcartamount():
     data = request.get_json()
     user_id = data.get("user_id")

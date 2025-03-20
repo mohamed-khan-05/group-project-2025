@@ -7,6 +7,9 @@ import AdminMenu from "../components/AdminMenu";
 import AddBook from "../components/AddBook";
 import AdminBookCard from "../components/AdminBookCard";
 
+// Media
+import { FaRegArrowAltCircleUp } from "react-icons/fa";
+
 const ManageBooks = () => {
   const navigate = useNavigate();
   const [showAdd, setShowAdd] = useState(false);
@@ -104,6 +107,13 @@ const ManageBooks = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      <div
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed z-10 bottom-10 right-10 cursor-pointer bg-blue-500 rounded-full w-15 h-15 flex justify-center items-center"
+      >
+        <FaRegArrowAltCircleUp className="w-10 h-10" />
       </div>
     </>
   );
