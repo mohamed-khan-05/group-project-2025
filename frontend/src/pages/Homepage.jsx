@@ -68,7 +68,8 @@ const Homepage = () => {
         searchTerm === "" ||
         book.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const bookPrice = book.price ? parseFloat(book.price) : 0;
+      let finPrice = book.price - (book.price * book.discount) / 100;
+      const bookPrice = book.price ? parseFloat(finPrice) : 0;
       const minPriceNum = minPrice ? parseFloat(minPrice) : 0;
       const maxPriceNum = maxPrice ? parseFloat(maxPrice) : Infinity;
       const matchesPrice = bookPrice >= minPriceNum && bookPrice <= maxPriceNum;

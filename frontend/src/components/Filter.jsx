@@ -39,10 +39,9 @@ const Filter = ({
   };
 
   const handleKeyPress = (e) => {
-    // Only allow numbers and decimal point
     const key = e.key;
-    if (!/[\d\.]/.test(key)) {
-      e.preventDefault(); // Prevent invalid characters from being typed
+    if (!/[\d\.]/.test(key) && key !== "Backspace" && key !== "Delete") {
+      e.preventDefault();
     }
   };
 
@@ -83,7 +82,7 @@ const Filter = ({
         <div className="flex gap-2">
           <input
             id="min-price"
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             maxLength={10}
             type="text"
             placeholder="Min"
@@ -93,7 +92,7 @@ const Filter = ({
           />
           <input
             id="max-price"
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             maxLength={10}
             type="text"
             placeholder="Max"
