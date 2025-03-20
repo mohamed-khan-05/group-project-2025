@@ -203,21 +203,21 @@ const BookDetails = () => {
                     <div className="flex items-center gap-4">
                       <button
                         onClick={() => updateQuantity(bookid, quantity - 1)}
-                        className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
+                        className="w-10 h-10 cursor-pointer font-bold bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
                       >
                         -
                       </button>
                       <span className="text-lg font-semibold">{quantity}</span>
                       <button
                         onClick={() => updateQuantity(bookid, quantity + 1)}
-                        className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
+                        className="w-10 h-10 cursor-pointer bg-gray-200 rounded-full flex items-center justify-center text-xl hover:bg-gray-300 transition"
                       >
                         +
                       </button>
                     </div>
                     <button
                       onClick={removefromcart}
-                      className="mt-3 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
+                      className="mt-3 px-4 py-2 cursor-pointer bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition"
                     >
                       Remove from Cart
                     </button>
@@ -225,7 +225,7 @@ const BookDetails = () => {
                 ) : (
                   <button
                     onClick={addtocart}
-                    className="px-6 py-3 bg-blue-500 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-600 transition w-full"
+                    className="px-6 py-3 bg-blue-500 cursor-pointer text-white font-semibold text-lg rounded-lg shadow-md hover:bg-blue-600 transition w-full"
                   >
                     Add to Cart
                   </button>
@@ -234,7 +234,7 @@ const BookDetails = () => {
             )}
 
             <button
-              className="px-6 py-3 bg-green-500 text-white font-semibold text-lg rounded-lg shadow-md hover:bg-green-600 transition w-full"
+              className="px-6 py-3 bg-green-500 cursor-pointer text-white font-semibold text-lg rounded-lg shadow-md hover:bg-green-600 transition w-full"
               onClick={() => {
                 navigate(`/cart/${user_id}`);
               }}
@@ -274,7 +274,7 @@ const BookDetails = () => {
                 {review.user_id === parseInt(user_id) && (
                   <button
                     onClick={() => handleDeleteReview(review.review_id)}
-                    className="mt-2 text-sm text-red-500 hover:underline"
+                    className="mt-2 text-sm text-red-500 hover:underline cursor-pointer"
                   >
                     Delete
                   </button>
@@ -299,7 +299,9 @@ const BookDetails = () => {
                   key={num}
                   type="button"
                   className={`w-10 h-10 flex items-center justify-center rounded-full border text-lg font-bold ${
-                    rating >= num ? "bg-yellow-400" : "bg-gray-200"
+                    rating >= num
+                      ? "bg-yellow-400 cursor-pointer"
+                      : "bg-gray-200 cursor-pointer"
                   }`}
                   onClick={() => setRating(num)}
                 >
@@ -319,7 +321,7 @@ const BookDetails = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full cursor-pointer"
           >
             Submit Review
           </button>

@@ -94,7 +94,9 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       <div>
         <button
           onClick={() => (inlist ? removefromlist() : addtolist())}
-          className={inlist ? "text-red-500" : "text-black"}
+          className={
+            inlist ? "text-red-500 cursor-pointer" : "text-black cursor-pointer"
+          }
         >
           <FaHeart />
         </button>

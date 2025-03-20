@@ -4,6 +4,9 @@ import { Context } from "../App";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
+// Media
+import { ArrowLeft } from "lucide-react";
+
 const categories = [
   "Accounting and Informatics",
   "Applied Sciences",
@@ -116,8 +119,19 @@ const AdminBookDetails = () => {
     <>
       <ToastContainer hideProgressBar />
       <div className="p-4">
-        <button onClick={() => navigate("/managebooks")}>Back</button>
-        <h1 className="text-2xl font-bold mb-4">Edit Book Details</h1>
+        <button
+          onClick={() => {
+            navigate(`/managebooks`);
+          }}
+          className="absolute top-4 left-4 flex items-center text-gray-600 hover:text-gray-800 transition-all cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          Edit Book Details
+        </h1>
 
         {!book ? (
           <div>Loading...</div>

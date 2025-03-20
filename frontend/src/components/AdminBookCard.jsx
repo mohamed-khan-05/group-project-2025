@@ -31,7 +31,7 @@ const AdminBookCard = ({ book }) => {
       <ToastContainer />
       <div className="w-[45vw] sm:w-[300px] border p-2 sm:p-4 rounded shadow-md">
         <button
-          className="text-red-500 text-2xl"
+          className="text-red-500 text-2xl cursor-pointer"
           onClick={() => {
             deletebook();
           }}

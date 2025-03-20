@@ -107,7 +107,7 @@ const Homepage = () => {
                 <div className="flex absolute top-0">
                   <Menu />
                   <div
-                    className="text-3xl cursor-pointer ml-2 text-black hover:text-gray-500 transition-all"
+                    className="text-3xl cursor-pointer ml-2 text-black hover:text-gray-500 transition-all max-h-[30px]"
                     onClick={() => setShowmenu(!showmenu)}
                   >
                     <RiCloseLargeFill />
@@ -166,7 +166,7 @@ const Homepage = () => {
                 <div className="flex absolute z-50 top-0">
                   <Menu />
                   <div
-                    className="text-3xl cursor-pointer ml-4 text-black hover:text-gray-500 transition-all"
+                    className="text-3xl cursor-pointer ml-4 text-black hover:text-gray-500 transition-all max-h-[30px]"
                     onClick={() => setShowmenu(!showmenu)}
                   >
                     <RiCloseLargeFill />

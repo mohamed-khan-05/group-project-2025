@@ -143,7 +143,7 @@ const AllOrders = () => {
               {/* Button to mark as Completed (only for Pending orders) */}
               {order.status === "Pending" && (
                 <button
-                  className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                  className="mt-4 px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
                   onClick={() => updateOrderStatus(order.id)}
                 >
                   Mark as Completed
