@@ -10,6 +10,14 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.a
 
 @LoginSignup_bp.route("/login", methods=["POST", "OPTIONS",])
 def login():
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "Preflight OK"})
+        response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 204
+    
     data = request.get_json()
     email=data.get("email")
     password = data.get("password")
