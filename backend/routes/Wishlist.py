@@ -1,7 +1,10 @@
 from flask import jsonify, request, Blueprint
 from models import db, Wishlist, Book, User
+import os
 
 Wishlist_bp = Blueprint("Wishlist_bp", __name__)
+
+BASE_URL = os.getenv("BASE_URL")
 
 @Wishlist_bp.route("/addtowishlist", methods=["POST"])
 def addtowishlist():
@@ -46,7 +49,7 @@ def getwishlist():
                 "price": book.price,
                 "discount": book.discount,
                 "quantity": book.quantity,
-                "image": f"http://127.0.0.1:5000/uploads/books/{book.image}"
+                "image": f"{BASE_URL}/uploads/books/{book.image}"
             })
 
     return jsonify({
