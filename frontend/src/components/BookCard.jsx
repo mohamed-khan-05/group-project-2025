@@ -113,7 +113,7 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       </div>
 
       <div className="flex justify-between">
-        <h3 className="text-lg font-semibold break-words w-[85%]">
+        <h3 className="text-lg font-semibold break-words w-[85%] text-black">
           {book.title}
         </h3>
         <button
