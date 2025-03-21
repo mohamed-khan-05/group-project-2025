@@ -239,9 +239,27 @@ const Homepage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <button
+              className="bg-blue-500 text-white mx-2 my-2 px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all"
+              onClick={() => setShowFilter(!showFilter)}
+            >
+              {showFilter ? "Hide Filters" : "Show Filters"}
+            </button>
           </div>
-          {/* Filter Component */}
-          <div className="w-[100vw] sm:w-full sm:max-w-82">
+
+          {showFilter && (
+            <div className="sm:hidden w-full bg-white p-4 shadow-md">
+              <Filter
+                setSelectedCategory={setSelectedCategory}
+                setSortOption={setSortOption}
+                setMinPrice={setMinPrice}
+                setMaxPrice={setMaxPrice}
+              />
+            </div>
+          )}
+
+          {/* PC Filter Component */}
+          <div className="hidden sm:block w-[100vw] sm:w-full sm:max-w-82">
             <Filter
               setSelectedCategory={setSelectedCategory}
               setSortOption={setSortOption}
