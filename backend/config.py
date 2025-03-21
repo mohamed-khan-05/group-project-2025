@@ -35,22 +35,3 @@ from routes.Orders import Orders_bp
 app.register_blueprint(Orders_bp, url_prefix="/orders")
 from routes.Filter import Filter_bp
 app.register_blueprint(Filter_bp, url_prefix="/filter")
-
-@app.after_request
-def add_cors_headers(response):
-    """Ensure every response includes required CORS headers"""
-    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"  # Important if using credentials
-    return response
-
-@app.route('/<path:path>', methods=['OPTIONS'])
-def handle_options(path):
-    """Handle CORS preflight requests"""
-    response = jsonify({"message": "Preflight OK"})
-    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response, 200
