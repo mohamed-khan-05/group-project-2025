@@ -30,7 +30,12 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
       .post(
         `${url}/auth/login`,
         { email: email, password: password },
-        { withCredentials: false }
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
       )
       .then((res) => {
         if (res.data.status == "404") {
