@@ -29,13 +29,13 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
     axios
       .options(
         `${url}/auth/login`,
-        { email: email, password: password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
+        { email: email, password: password }
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   withCredentials: true,
+        // }
       )
       .then((res) => {
         if (res.data.status == "404") {
