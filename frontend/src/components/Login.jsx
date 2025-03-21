@@ -27,11 +27,7 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
     }
 
     axios
-      .post(
-        `${url}/login`,
-        { email: email, password: password },
-        { withCredentials: true }
-      )
+      .post(`${url}/login`, { email: email, password: password })
       .then((res) => {
         if (res.data.status == "404") {
           toast.error("User not found");
