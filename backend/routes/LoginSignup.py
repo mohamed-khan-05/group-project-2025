@@ -7,14 +7,15 @@ LoginSignup_bp = Blueprint('login_signup', __name__)
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
-@LoginSignup_bp.route("/login", methods=["OPTIONS"])
-def options_login():
-    response = jsonify({"message": "CORS preflight successful"})
-    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response, 200
+# @LoginSignup_bp.route('/login', methods=['OPTIONS'])
+# def preflight():
+#     """Handles preflight requests"""
+#     response = jsonify({"message": "Preflight OK"})
+#     response.headers.add("Access-Control-Allow-Origin", "https://devdynamos-bookstore.netlify.app")
+#     response.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+#     response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+#     response.headers.add("Access-Control-Allow-Credentials", "true")
+#     return response, 200
     
 @LoginSignup_bp.route("/login", methods=["POST"])
 def login():
