@@ -32,6 +32,7 @@ const Homepage = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [pop, setPop] = useState([]);
+  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     if (!userid) {
