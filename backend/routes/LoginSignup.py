@@ -4,6 +4,14 @@ from models import db, User
 
 LoginSignup_bp = Blueprint('login_signup', __name__)
 
+@LoginSignup_bp.route("/login", methods=["OPTIONS"])
+def options_login():
+    response = jsonify({"message": "CORS preflight successful"})
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response, 200
     
 @LoginSignup_bp.route("/login", methods=["POST"])
 def login():
