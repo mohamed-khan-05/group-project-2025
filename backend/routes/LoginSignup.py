@@ -9,15 +9,8 @@ LoginSignup_bp = Blueprint('login_signup', __name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
 @LoginSignup_bp.route("/login", methods=["POST", "OPTIONS",])
+@cross_origin(origins=FRONTEND_URL, supports_credentials=True)
 def login():
-    if request.method == "OPTIONS":
-        response = jsonify({"message": "Preflight OK"})
-        response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
-        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        return response, 204
-    
     data = request.get_json()
     email=data.get("email")
     password = data.get("password")
@@ -30,6 +23,7 @@ def login():
     return jsonify({"status": "200", "user_id":user.id})
 
 @LoginSignup_bp.route("/signup", methods=["POST"])
+@cross_origin(origins=FRONTEND_URL, supports_credentials=True)
 def signup():
     data = request.get_json()
     name = data.get("name")
