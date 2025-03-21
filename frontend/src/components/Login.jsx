@@ -27,22 +27,13 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
     }
 
     axios
-      .options(
-        `${url}/auth/login`,
-        { email: email, password: password }
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   withCredentials: true,
-        // }
-      )
+      .options(`${url}/auth/login`, { email: email, password: password })
       .then((res) => {
         if (res.data.status == "404") {
           toast.error("User not found");
         } else if (res.data.status == "401") {
           toast.error("Incorrect details");
-        } else {
+        } else if (res.data.user_id) {
           toast.success("Login Successful");
           const user_id = res.data.user_id;
           localStorage.setItem("user_id", user_id);
