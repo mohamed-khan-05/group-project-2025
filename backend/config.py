@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-# CORS(app, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
