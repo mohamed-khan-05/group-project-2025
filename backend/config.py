@@ -7,7 +7,8 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
-CORS(app, resources={r"/*": {"origins": [FRONTEND_URL, "https://devdynamos-bookstore.netlify.app"]}}, supports_credentials=True)
+# CORS(app, resources={r"/*": {"origins": [FRONTEND_URL, "https://devdynamos-bookstore.netlify.app"]}}, supports_credentials=True)
+CORS(app)
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['CORS_HEADERS'] = 'Content-Type'
