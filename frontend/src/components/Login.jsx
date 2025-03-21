@@ -34,7 +34,6 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       )
       .then((res) => {

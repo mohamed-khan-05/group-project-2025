@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=False)
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -40,15 +40,18 @@ app.register_blueprint(Filter_bp, url_prefix="/filter")
 @app.after_request
 def add_cors_headers(response):
     """Ensure every response includes required CORS headers"""
-    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", FRONTEND_URL)
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"  # Important if using credentials
     return response
 
 @app.route('/<path:path>', methods=['OPTIONS'])
 def handle_options(path):
+    """Handle CORS preflight requests"""
     response = jsonify({"message": "Preflight OK"})
-    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", FRONTEND_URL)
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
     return response, 200
