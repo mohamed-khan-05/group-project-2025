@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True, allow_headers=["Authorization", "Content-Type"])
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -35,15 +35,14 @@ app.register_blueprint(Orders_bp, url_prefix="/orders")
 from routes.Filter import Filter_bp
 app.register_blueprint(Filter_bp, url_prefix="/filter")
 
-# Explicitly handle OPTIONS request for preflight
 @app.route("/auth/login", methods=["OPTIONS"])
 def auth_options():
     response = jsonify({"message": "Preflight OK"})
     response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, DELETE, PUT"
-    response.headers["Access-Control-Allow-Headers"] = "append,delete,entries,foreach,get,has,keys,set,values,Authorization,Content-Type"
+    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
     response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Max-Age"]= 86400
+    response.headers["Access-Control-Max-Age"] = "86400"
     return response, 200
 
 @app.after_request
