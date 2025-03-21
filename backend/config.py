@@ -7,7 +7,6 @@ import os
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
-# CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True, methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=False, methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 
 
@@ -43,6 +42,5 @@ def add_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "append,delete,entries,foreach,get,has,keys,set,values,Authorization,Content-Type"
-    # response.headers["Access-Control-Allow-Credentials"] = "false"
     response.headers["Access-Control-Max-Age"]= 86400
     return response

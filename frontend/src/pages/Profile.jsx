@@ -20,12 +20,10 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .post(`${url}/getprofile`, { user_id })
+      .post(`${url}/auth/getprofile`, { user_id })
       .then((res) => {
         if (res.data.status === "200" && res.data.user) {
           setUser({ name: res.data.user.name });
-
-          // Extract part before '@' in student_num
           const studentNumber = res.data.user.student_num?.split("@")[0] || "";
           setNum(studentNumber);
         } else {
@@ -43,7 +41,7 @@ const Profile = () => {
     }
 
     try {
-      const res = await axios.post(`${url}/profileedit`, {
+      const res = await axios.post(`${url}/auth/profileedit`, {
         user_id,
         name: user.name,
         old_password: oldPassword,
@@ -87,7 +85,6 @@ const Profile = () => {
         <h1 className="text-2xl font-bold text-center mb-4">Profile</h1>
 
         <form onSubmit={handleUpdate} className="space-y-4">
-          {/* Name Input */}
           <div>
             <label className="block text-gray-700 font-medium">Name</label>
             <input
@@ -100,7 +97,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Student number */}
           <div>
             <label className="block text-gray-700 font-medium">
               Student Number
@@ -114,7 +110,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Old Password Input */}
           <div>
             <label className="block text-gray-700 font-medium">
               Old Password
@@ -129,7 +124,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* New Password Input */}
           <div>
             <label className="block text-gray-700 font-medium">
               New Password
@@ -143,7 +137,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Confirm Password Input */}
           <div>
             <label className="block text-gray-700 font-medium">
               Confirm New Password
@@ -157,7 +150,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
