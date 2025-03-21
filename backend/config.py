@@ -1,5 +1,4 @@
-from datetime import timedelta
-from flask import Flask,jsonify,request
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import send_from_directory
@@ -7,21 +6,19 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, 
-     supports_credentials=True, methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"], 
-     allow_headers=["Content-Type", "Authorization"])
+
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True)
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///bookstore.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bookstore.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 @app.route('/uploads/books/<filename>')
 def uploaded_book_file(filename):
     return send_from_directory('uploads/books', filename)
 
-
-db=SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 from routes.LoginSignup import LoginSignup_bp
 app.register_blueprint(LoginSignup_bp, url_prefix="/auth")
@@ -38,10 +35,19 @@ app.register_blueprint(Orders_bp, url_prefix="/orders")
 from routes.Filter import Filter_bp
 app.register_blueprint(Filter_bp, url_prefix="/filter")
 
-@app.route('/auth/login', methods=['OPTIONS'])
-def options():
-    response = jsonify({"message": "CORS preflight OK"})
-    response.status_code = 204
+# Explicitly handle OPTIONS request for preflight
+@app.route("/auth/login", methods=["OPTIONS"])
+def auth_options():
+    response = jsonify({"message": "Preflight OK"})
+    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response, 200
+
+@app.after_request
+def add_cors_headers(response):
+    """Ensure every response includes required CORS headers"""
     response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
