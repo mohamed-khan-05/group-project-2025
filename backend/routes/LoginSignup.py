@@ -8,7 +8,7 @@ LoginSignup_bp = Blueprint('login_signup', __name__)
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
-@LoginSignup_bp.route("/login", methods=["POST", "OPTIONS"])
+@LoginSignup_bp.route("/login", methods=["POST", "OPTIONS", "GET"])
 def login():
     if request.method == "OPTIONS":
         return jsonify({"message":"Options"})
