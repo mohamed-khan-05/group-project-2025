@@ -7,10 +7,9 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=False)
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}})
 
 UPLOAD_FOLDER = 'uploads/books'
-app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///bookstore.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
