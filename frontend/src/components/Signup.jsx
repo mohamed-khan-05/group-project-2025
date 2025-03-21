@@ -26,7 +26,7 @@ const Signup = ({ isLogin, setIsLogin }) => {
     }
 
     axios
-      .post(`${url}/signup`, {
+      .post(`${url}/auth/signup`, {
         name: name,
         studentNum: studentNum,
         email: email,

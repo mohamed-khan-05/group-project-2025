@@ -28,7 +28,7 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
 
     axios
       .post(
-        `${url}/login`,
+        `${url}/auth/login`,
         { email: email, password: password },
         { withCredentials: false }
       )
