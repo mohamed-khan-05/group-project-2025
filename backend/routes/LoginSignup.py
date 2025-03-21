@@ -10,6 +10,11 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.a
 
 @LoginSignup_bp.route("/login", methods=["POST", "OPTIONS"])
 def login():
+    if request.method == "OPTIONS":
+        return jsonify({"message":"Options"})
+    if request.method == "GET":
+        return jsonify({"message":"GET"})
+
     data = request.get_json()
     email=data.get("email")
     password = data.get("password")
