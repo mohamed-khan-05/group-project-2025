@@ -8,8 +8,7 @@ LoginSignup_bp = Blueprint('login_signup', __name__)
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
 
-@cross_origin(origin=FRONTEND_URL, methods=["POST", "OPTIONS"], headers=["Content-Type", "Authorization"])
-@LoginSignup_bp.route("/login", methods=["POST"])
+@LoginSignup_bp.route("/login", methods=["POST", "OPTIONS"])
 def login():
     data = request.get_json()
     email=data.get("email")
