@@ -27,13 +27,14 @@ const Login = ({ setUser_id, isLogin, setIsLogin }) => {
     }
 
     axios
-      .post(
+      .options(
         `${url}/auth/login`,
         { email: email, password: password },
         {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       )
       .then((res) => {

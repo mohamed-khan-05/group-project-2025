@@ -7,7 +7,9 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}})
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, 
+     supports_credentials=True, methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"], 
+     allow_headers=["Content-Type", "Authorization"])
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -35,3 +37,13 @@ from routes.Orders import Orders_bp
 app.register_blueprint(Orders_bp, url_prefix="/orders")
 from routes.Filter import Filter_bp
 app.register_blueprint(Filter_bp, url_prefix="/filter")
+
+@app.route('/auth/login', methods=['OPTIONS'])
+def options():
+    response = jsonify({"message": "CORS preflight OK"})
+    response.status_code = 204
+    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
