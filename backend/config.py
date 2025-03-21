@@ -1,5 +1,5 @@
 from datetime import timedelta
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import send_from_directory
@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://devdynamos-bookstore.netlify.app")
-CORS(app, resources={r"/*": {"origins": FRONTEND_URL}})
+CORS(app, resources={r"/*": {"origins": FRONTEND_URL}}, supports_credentials=True)
 
 UPLOAD_FOLDER = 'uploads/books'
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -25,7 +25,7 @@ db=SQLAlchemy(app)
 @app.after_request
 def add_cors_headers(response):
     """Ensure every response includes required CORS headers"""
-    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", FRONTEND_URL)
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     return response
@@ -33,7 +33,7 @@ def add_cors_headers(response):
 @app.route('/<path:path>', methods=['OPTIONS'])
 def handle_options(path):
     response = jsonify({"message": "Preflight OK"})
-    response.headers["Access-Control-Allow-Origin"] = FRONTEND_URL
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", FRONTEND_URL)
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     return response, 200
