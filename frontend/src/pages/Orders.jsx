@@ -3,13 +3,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../App";
 
 // Media
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Orders = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const user_id = useContext(Context);
   const { userid } = useParams();
   const url = import.meta.env.VITE_BASE_URL;
@@ -32,6 +34,7 @@ const Orders = () => {
         });
 
         setOrders(res.data.orders || []);
+        setFilteredOrders(res.data.orders || []);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -42,16 +45,16 @@ const Orders = () => {
     fetchOrders();
   }, [user_id]);
 
+  useEffect(() => {
+    setFilteredOrders(
+      orders.filter((order) =>
+        order.book_title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, orders]);
+
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
-  }
-
-  if (!orders || orders.length === 0) {
-    return (
-      <div className="text-center text-gray-500 mt-10 text-lg">
-        No orders found.
-      </div>
-    );
   }
 
   return (
@@ -64,51 +67,76 @@ const Orders = () => {
         <span className="text-sm font-medium">Back</span>
       </button>
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Your Orders</h2>
-      <div className="space-y-6">
-        {orders.map((order) => (
-          <div
-            key={order.order_id}
-            className="p-5 border border-gray-200 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50"
+
+      <div className="relative w-full mb-4">
+        <input
+          type="text"
+          placeholder="Search by book title..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-2 text-gray-500 hover:text-gray-700"
           >
-            <div className="flex items-center space-x-4">
-              <img
-                onClick={() => {
-                  navigate(`/bookdetails/${order.book_id}`);
-                }}
-                src={order.book_image}
-                alt={order.book_title}
-                className="w-24 h-28 object-cover rounded-md shadow"
-              />
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {order.book_title}
-                </h3>
-                <p className="text-gray-600">
-                  by {order.book_author || "Unknown Author"}
+            <X className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+
+      {filteredOrders.length === 0 ? (
+        <div className="text-center text-gray-500 mt-10 text-lg">
+          No orders found.
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {filteredOrders.map((order) => (
+            <div
+              key={order.order_id}
+              className="p-5 border border-gray-200 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50"
+            >
+              <div className="flex items-center space-x-4">
+                <img
+                  onClick={() => {
+                    navigate(`/bookdetails/${order.book_id}`);
+                  }}
+                  src={order.book_image}
+                  alt={order.book_title}
+                  className="w-24 h-28 object-cover rounded-md shadow"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {order.book_title}
+                  </h3>
+                  <p className="text-gray-600">
+                    by {order.book_author || "Unknown Author"}
+                  </p>
+                  <p className="text-gray-700">Quantity: {order.quantity}</p>
+                  <p className="text-blue-700 font-semibold text-lg">
+                    ZAR {order.purchase_amount}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p
+                  className={`text-sm font-medium px-3 py-1 rounded-full inline-block ${
+                    order.status === "Completed"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {order.status}
                 </p>
-                <p className="text-gray-700">Quantity: {order.quantity}</p>
-                <p className="text-blue-700 font-semibold text-lg">
-                  ZAR {order.purchase_amount}
+                <p className="text-gray-500 text-sm mt-1">
+                  Ordered on {new Date(order.purchase_date).toLocaleString()}
                 </p>
               </div>
             </div>
-            <div className="text-right">
-              <p
-                className={`text-sm font-medium px-3 py-1 rounded-full inline-block ${
-                  order.status === "Completed"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-yellow-100 text-yellow-700"
-                }`}
-              >
-                {order.status}
-              </p>
-              <p className="text-gray-500 text-sm mt-1">
-                Ordered on {new Date(order.purchase_date).toLocaleString()}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
