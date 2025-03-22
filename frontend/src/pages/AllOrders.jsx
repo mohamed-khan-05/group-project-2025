@@ -127,7 +127,7 @@ const AllOrders = () => {
                 {formatDate(order.purchase_date)}
               </p>
               <p className="text-gray-600 mb-4">
-                <strong>Purchase Amount:</strong> $
+                <strong>Purchase Amount:</strong> R
                 {parseFloat(order.purchase_amount).toFixed(2)}
               </p>
 

@@ -115,7 +115,7 @@ const Orders = () => {
                   </p>
                   <p className="text-gray-700">Quantity: {order.quantity}</p>
                   <p className="text-blue-700 font-semibold text-lg">
-                    ZAR {order.purchase_amount}
+                    R {order.purchase_amount}
                   </p>
                 </div>
               </div>
