@@ -23,6 +23,7 @@ def get_user_orders():
             'order_id': order.id,
             "book_id":order.book_id,
             'book_title': book.title,
+            'book_author': book.author,
             'quantity': order.quantity,
             'purchase_amount': str(order.purchase_amount),  
             'purchase_date': order.purchase_date.isoformat(),
