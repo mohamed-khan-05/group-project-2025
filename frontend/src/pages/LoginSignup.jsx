@@ -11,7 +11,7 @@ const LoginSignup = ({ setUser_id }) => {
   useEffect(() => {
     const user_id = localStorage.getItem("user_id");
     if (!user_id) return;
-    if (user_id === "1") navigate("/adminpage");
+    if (user_id === "1") navigate("/managebooks");
     else navigate(`/homepage/${user_id}`);
   }, []);
 
