@@ -86,6 +86,7 @@ def getcart():
                 "id": item.id,
                 "user_id": item.user_id,
                 "book_id": item.book_id,
+                "name" : book.title,
                 "quantity": item.quantity,
                 "total":item.total,
                 "discount":item.discount_amount,
