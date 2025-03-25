@@ -43,7 +43,7 @@ const Wishlist = () => {
   return (
     <>
       <ToastContainer />
-      <div className="min-h-screen bg-gray-900 text-white sm:p-6 p-2">
+      <div className="min-h-screen bg-white text-black sm:p-6 p-2">
         <div className="max-w-6xl mx-auto">
           <button
             onClick={() => navigate(`/homepage/${user_id}`)}
@@ -52,7 +52,7 @@ const Wishlist = () => {
             ⬅ Back to Home
           </button>
 
-          <h2 className="text-3xl font-bold mb-4 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-center text-black">
             Your Wishlist 📚
           </h2>
 
