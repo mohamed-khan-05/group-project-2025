@@ -36,7 +36,9 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
     });
     setInlist(true);
     toast.success("Added to Wishlist");
-    setRefresh((prev) => prev + 1);
+    setTimeout(() => {
+      setRefresh((prev) => prev + 1);
+    }, 500);
   };
 
   const removefromlist = () => {
@@ -45,7 +47,9 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
       book_id: book.id,
     });
     setInlist(false);
-    setRefresh((prev) => prev + 1);
+    setTimeout(() => {
+      setRefresh((prev) => prev + 1);
+    }, 500);
   };
 
   const addtocart = () => {
@@ -118,7 +122,11 @@ const BookCard = ({ book, setRefresh, selectedCategory }) => {
         </h3>
         <button
           onClick={() => (incart ? removefromcart() : addtocart())}
-          className={incart ? `cursor-pointer text-blue-500` : "cursor-pointer"}
+          className={
+            incart
+              ? `cursor-pointer text-blue-500`
+              : "cursor-pointer text-black"
+          }
         >
           <FaShoppingCart />
         </button>
