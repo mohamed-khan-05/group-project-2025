@@ -35,6 +35,15 @@ const Profile = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
+    if (
+      newPassword.length < 4 ||
+      confirmPassword.length < 4 ||
+      oldPassword.length < 4
+    ) {
+      return toast.error("Password must be atleast 4 characters");
+    }
+
     if (newPassword && newPassword !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;

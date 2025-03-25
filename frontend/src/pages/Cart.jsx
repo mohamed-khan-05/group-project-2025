@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Media
 import { ArrowLeft } from "lucide-react";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Cart = () => {
   const url = import.meta.env.VITE_BASE_URL;
@@ -213,6 +214,15 @@ const Cart = () => {
                 <p className="text-gray-800 font-bold text-lg">
                   ZAR {item.total}
                 </p>
+
+                <div
+                  onClick={() => {
+                    removeitemfromcart(item.book_id);
+                  }}
+                  className="flex cursor-pointer justify-end text-red-500 text-2xl"
+                >
+                  <RiDeleteBin6Line />
+                </div>
               </div>
             </div>
           ))}
