@@ -62,14 +62,18 @@ const Wishlist = () => {
             </p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
-              {books.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  setRefresh={setRefresh}
-                  selectedCategory=""
-                />
-              ))}
+              {books.map((book) => {
+                return (
+                  <div className="flex bg-blue-500 p-1 justify-center rounded-lg">
+                    <BookCard
+                      key={book.id}
+                      book={book}
+                      setRefresh={setRefresh}
+                      selectedCategory=""
+                    />
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
