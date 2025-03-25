@@ -69,7 +69,7 @@ const Signup = ({ isLogin, setIsLogin }) => {
           className="border max-w-[500px] m-2 p-2 rounded-lg bg-white"
           type="text"
           placeholder="Student Number"
-          maxLength={10}
+          maxLength={8}
           value={studentNum}
           onChange={(e) => {
             setStudentNum(e.target.value);
