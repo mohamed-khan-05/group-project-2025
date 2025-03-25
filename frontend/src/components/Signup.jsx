@@ -21,16 +21,19 @@ const Signup = ({ isLogin, setIsLogin }) => {
       return toast.error("Please fill in all details");
     }
 
-    if (password.length < 4) {
-      return toast.error("Password must be atleast 4 characters");
+    const cleanedPassword = password.replace(/\s/g, "");
+    const cleanedName = name.trim();
+
+    if (cleanedPassword.length < 4) {
+      return toast.error("Password must be at least 4 characters");
     }
 
     axios
       .post(`${url}/auth/signup`, {
-        name: name,
+        name: cleanedName,
         studentNum: studentNum,
         email: email,
-        password: password,
+        password: cleanedPassword,
       })
       .then((res) => {
         if (res.data.status == "200") {

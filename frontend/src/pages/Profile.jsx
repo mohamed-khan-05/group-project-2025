@@ -36,25 +36,28 @@ const Profile = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
+    const cleanedOldPassword = oldPassword.replace(/\s/g, "");
+    const cleanedNewPassword = newPassword.replace(/\s/g, "");
+    const cleanedConfirmPassword = confirmPassword.replace(/\s/g, "");
+
     if (
-      newPassword.length < 4 ||
-      confirmPassword.length < 4 ||
-      oldPassword.length < 4
+      cleanedNewPassword.length < 4 ||
+      cleanedConfirmPassword.length < 4 ||
+      cleanedOldPassword.length < 4
     ) {
-      return toast.error("Password must be atleast 4 characters");
+      return toast.error("Password must be at least 4 characters");
     }
 
-    if (newPassword && newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
+    if (cleanedNewPassword !== cleanedConfirmPassword) {
+      return toast.error("Passwords do not match.");
     }
 
     try {
       const res = await axios.post(`${url}/auth/profileedit`, {
         user_id,
         name: user.name,
-        old_password: oldPassword,
-        new_password: newPassword,
+        old_password: cleanedOldPassword,
+        new_password: cleanedNewPassword,
       });
 
       if (res.data.status === "200") {
@@ -67,7 +70,7 @@ const Profile = () => {
       } else {
         toast.error("Error updating profile.");
       }
-    } catch {
+    } catch (error) {
       toast.error("Server error.");
     }
   };
